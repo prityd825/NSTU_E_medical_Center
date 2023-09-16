@@ -1,0 +1,43 @@
+{% extends 'hospital/doctor_base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    
+    .form-box {
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box legend {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+  
+    .form-control {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .navbar {
+        margin-left: 240px;
+    }
+</style>
+
+<br><br><br>
+<div class="content-section">
+    <form method="POST" class="form-box">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Blog Post</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Post</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

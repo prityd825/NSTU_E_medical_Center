@@ -1,0 +1,78 @@
+
+
+    {% extends 'hospital/patient_base.html' %}
+    {%load static%}
+    {% block content %}
+
+    <head>
+        <style>
+            /* Center the content horizontally and add some spacing */
+        .row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Adjust the height as needed for your layout */
+        }
+
+        /* Style the heading */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Style the form elements */
+        form {
+            width: 100%;
+            max-width: 400px;
+            
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: aliceblue;
+        }
+
+        /* Style form fields */
+        form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        /* Style the submit button */
+        form button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 40%;
+        }
+
+        /* Hover effect for the submit button */
+        form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .navbar{
+            margin-left: 240px;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <h1>Select a Doctor to Message</h1>
+        
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Message</button>
+            </form>
+        </div>
+    </body>
+
+    {% endblock content%}

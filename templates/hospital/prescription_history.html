@@ -1,0 +1,26 @@
+
+{% extends 'hospital/doctor_base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<head>
+    <style>
+        .navbar{
+            margin-left: 240px;
+          }
+    </style>
+</head>
+<div style="margin: 100px;">
+    <h4>Prescription list:</h4>
+    <ul>
+        {% for prescription in prescriptions %}
+            <li>
+                 <a style="color: blue;" href="{% url 'generate_pdf' prescription.id %}" target="_blank"><span> {{ prescription.patient }} - {{prescription.date}}</span></a>
+            </li>
+        {% endfor %}
+    </ul>
+    
+</div>
+<br><br><br><br><br>
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Add your CSS styles here */
+    .post-box {
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-box img {
+        max-width: 100px;
+        height: auto;
+        border-radius: 50%;
+    }
+
+    .article-title {
+        font-size: 24px;
+    }
+
+    .article-metadata {
+        margin-top: 10px;
+    }
+
+    .article-content {
+        text-align: justify;
+    }
+</style>
+
+<div class="chk" style="margin: 100px;">
+    <br>
+    {% for post in posts %}
+    <div class="post-box">
+        <article class="media content-section">
+            
+            <div class="media-body text-center">
+                <div class="article-metadata">
+                    <h5 class="mr-2" href="#">{{ post.author }}</h5>
+                    <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                </div>
+                <div style="justify-content: center;">
+                    <h2 class="article-title">{{ post.title }}</h2>
+                </div>
+                <p class="article-content">{{ post.content }}</p>
+            </div>
+        </article>
+    </div>
+    <br><br><br>
+    {% endfor %}
+</div>
+
+{% endblock content %}
+
+

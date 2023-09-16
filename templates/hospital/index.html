@@ -1,0 +1,73 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<head>
+  <style media="screen">
+    .jumbotron {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      background-image: url('{% static "images\bangabandhu mural.jpg" %}');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .jumbotron h5,
+    h3 {
+      text-align: center;
+    }
+
+
+    .alert {
+      margin: 0px;
+    }
+
+
+
+    .glow {
+      font-size: 40px;
+      color: white;
+      text-align: center;
+      
+    }
+
+    @-webkit-keyframes glow {
+      from {
+        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000, 0 0 50px #9554b3, 0 0 60px #9554b3, 0 0 70px #9554b3;
+      }
+
+      to {
+        text-shadow: 0 0 20px #eeeeee, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+      }
+    }
+  </style>
+</head>
+<br>
+<br>
+
+<div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
+  <br>
+  <h5 class="display-10 glow">Noakhali Science and Technology University</h5>
+  <p class="display-8 glow">E-medical service</p>
+  <br><br>
+</div>
+
+<br><br>
+<div style="color: cornflowerblue; margin: 0 100px 0 100px; text-align: center;">
+  <h3>
+    Welcome to the Medical Center of NSTU
+  </h3>
+</div>
+<div style="margin: 0 100px 0 100px; text-align: center;">
+  <p>The medical center of Noakhali science and technology university (NSTU) temporary located administration building ground floor , room no-117,offers free experienced general practitioner and emergency medical care services to all members (students, teachers, officers, staff, also family members of the teachers, officers, staff­ ) of the university community.
+
+    The center provides service usually 8.30 am to 5.00 pm in working days but provide emergency services 24 hours. All members of the university get medicine from the medical center at free of cost .The center also has an ambulance, for 24 hours service.</p>
+</div>
+{% comment %} {% include "hospital/admin_doctor_patient_card.html" %} {% endcomment %}
+<br><br><br>
+
+
+{% endblock content %}

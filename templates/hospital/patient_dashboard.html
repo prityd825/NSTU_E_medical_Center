@@ -1,0 +1,79 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+    <head>
+        <style>
+                /* Style for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        /* Style for table headers */
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Style for table rows */
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Style for alternating row background colors */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Style for table cells */
+        td {
+            padding: 10px;
+        }
+
+        /* Style for prescription links */
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Style for strong elements within prescription links */
+        a strong {
+            font-weight: bold;
+        }
+
+        /* Style for the "View prescription" text */
+        a span {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .navbar{
+            margin-left: 240px;
+        }
+    </style>
+</head>
+<div style="margin: 100px;">
+    <h2>Your Prescriptions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Prescription</th>
+                <th>Doctor</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prescription in prescriptions %}
+                <tr>
+                    <td><a href="{% url 'generate_pdf_patient' prescription.id %}" target="_blank"><span><strong>View prescription</strong></span></a></td>
+                    <td>{{ prescription.doctor }}</td>
+                    <td>{{ prescription.date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

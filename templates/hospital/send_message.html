@@ -1,0 +1,17 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+
+    <div style="margin: 100px;">
+        <h1>Send Message to {{ recipient.username }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="content" rows="4" cols="50" required></textarea>
+            <br>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    
+
+{% endblock content %}

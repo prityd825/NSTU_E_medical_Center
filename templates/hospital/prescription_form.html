@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title></title>
+        <style>
+            /* Style the outer container */
+            .row {
+                width: 100%;
+                max-width: 600px; /* Adjust the max-width as needed */
+                margin: 0 auto;
+            }
+
+            /* Style the form elements */
+            form {
+                background-color: #f5f5f5;
+                padding: 40px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color:aliceblue;
+                width: 150%;
+                margin-left: -15%;
+            }
+
+            /* Style the labels */
+            form label {
+                display: block;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+
+            /* Style the textareas */
+            form textarea {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                resize: vertical;
+            }
+
+            /* Style the submit button */
+            form button[type="submit"] {
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            /* Hover effect for the submit button */
+            form button[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        </style>
+    </head>
+    <body>
+        
+        <div class="row">
+            <form method="POST">
+                <div style="text-align: center;">
+                    <h2>Medical Center</h2>
+                    <h4>Noakhali Science and Technology University</h4>
+                </div>
+                {% csrf_token %}
+                <p>Doctor: {{ prescription.doctor }}</p>
+                <p>Patient: {{ prescription.patient }}</p>
+                <p>Date: {{ prescription.date }}</p>
+                <label for="symptoms">Symptoms:</label>
+                <textarea name="symptoms" required></textarea>
+                {{ form.as_p }}
+                </br>
+                <label for="extraMedicine">Extra Medicine:</label>
+                <textarea name="extraMedicine"></textarea>
+                <label for="advice">Advice:</label>
+                <textarea name="advice"></textarea>
+                <label for="tests">Tests:</label>
+                <textarea name="tests" required></textarea>
+                </br>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </body>
+</html>
+

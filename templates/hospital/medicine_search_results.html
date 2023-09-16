@@ -1,0 +1,92 @@
+{% extends 'hospital/accountant_base.html' %}
+{% comment %} {% load static %}
+{% block content %}
+<style>
+</style>
+
+<div class="container">
+    <h2>Medicine Records - Search Results</h2>
+    <p>Showing records from {{ start_date|date:'Y-m-d' }} to {{ end_date|date:'Y-m-d' }}</p>
+    <table class="table table-hover" id="search-results-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Medicine Name</th>
+                <th>Company Name</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        {% for m in medicines %}
+        <tr>
+            <td>{{ m.date }}</td>
+            <td>{{ m.medicinename }}</td>
+            <td>{{ m.companyname }}</td>
+            <td>{{ m.stock }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %} {% endcomment %}
+
+{% load static %}
+{% block content %}
+<style>
+    /* Add your CSS styles here */
+    .container {
+        margin-top: 20px;
+    }
+
+    h2 {
+        margin-top: 20px;
+    }
+
+    #search-results-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #search-results-table th,
+    #search-results-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    #search-results-table th {
+        background-color: #f2f2f2;
+    }
+
+    #search-results-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #search-results-table tr:hover {
+        background-color: #ddd;
+    }
+</style>
+
+<div class="container">
+    <br>
+    <h4>Medicine Records - Search Results:</h4>
+    <br>
+    <p>Showing records from {{ start_date|date:'Y-m-d' }} to {{ end_date|date:'Y-m-d' }}</p>
+    <table class="table table-hover" id="search-results-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Medicine Name</th>
+                <th>Company Name</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        {% for m in medicines %}
+        <tr>
+            <td>{{ m.date }}</td>
+            <td>{{ m.medicinename }}</td>
+            <td>{{ m.companyname }}</td>
+            <td>{{ m.stock }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %}

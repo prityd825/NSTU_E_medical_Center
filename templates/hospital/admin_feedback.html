@@ -1,0 +1,31 @@
+{% extends 'hospital/admin_base.html' %}
+{% block content %}
+{%load static%}
+   <br>
+  <h3>Patient's Feedback</h3>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th style="background-color: #f2f2f2; text-align: left; padding: 10px;">Patient Name</th>
+        <th style="background-color: #f2f2f2; text-align: left; padding: 10px;">Email</th>
+        <th style="background-color: #f2f2f2; text-align: left; padding: 10px;">Feedback</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for feedback in feedback_items %}
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 10px;">{{ feedback.patientName }}</td>
+          <td style="border: 1px solid #ddd; padding: 10px;">{{ feedback.email }}</td>
+          <td style="border: 1px solid #ddd; padding: 10px;">{{ feedback.feedback }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3" style="text-align: center; font-style: italic; color: #888; margin-top: 20px;">No feedback available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+{% endblock content %}

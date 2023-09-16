@@ -1,0 +1,66 @@
+{% extends 'hospital/doctor_base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    /* Add your CSS styles here */
+    .blog-post {
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding-left: 20px;
+        padding-right:20px;
+    }
+
+    .blog-post img {
+        max-width: 100px;
+        height: auto;
+        border-radius: 50%;
+    }
+
+    .blog-post h2 {
+        margin-top: 10px;
+        font-size: 24px;
+    }
+
+    .blog-post h4, .blog-post h6 {
+        color: #777;
+    }
+
+    .blog-post p {
+        margin-top: 10px;
+    }
+
+    /* Adjust the margin for the navbar */
+    .navbar {
+        margin-left: 240px;
+    }
+</style>
+
+<br><br><br>
+<div>
+    <a href=""></a>
+</div>
+<div> <br> <br> <br> </div>
+{% for post in posts %}
+    <div class="blog-post">
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+            <div class="media-body">
+                <div class="article-metadata text-center">
+                    <h4>Author: {{ post.author }}</h4> 
+                    <h6>Date: {{ post.date_posted}}</h6>
+                </div>
+                <div style="text-align: center;">
+                    <a href="{% url 'post-detail' post.id %}"><h2>Title: <span style="color: darkblue;">{{ post.title }}</span></h2></a>
+                </div>
+                <p class="article-content" text-align= "justify">{{ post.content }}</p>
+                {% comment %} <h5><a type="button" class="btn btn-primary" href="{% url 'post-detail' post.id %}">Open</a></h6> {% endcomment %}
+            </div>
+        </article>
+    </div>
+    <br><br><br><br>
+{% endfor %}
+
+{% endblock content %}

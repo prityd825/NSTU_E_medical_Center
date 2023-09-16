@@ -1,0 +1,29 @@
+<h1>Patients Who Messaged You</h1>
+{% extends 'hospital/doctor_base.html' %}
+{% block content %}
+{%load static%}
+
+<div>
+    <h2>Messages for You:</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Message Content</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+                <tr>
+                    <td>{{ message.sender }}</td>
+                    <td>{{ message.content }}</td>
+                    <td>{{ message.timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}

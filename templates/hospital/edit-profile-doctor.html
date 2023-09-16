@@ -1,0 +1,75 @@
+{% extends 'hospital/doctor_base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <title>Edit Profile</title>
+    <style>
+        .navbar{
+            margin-left: 240px;
+        }
+        /* Center the content horizontally and add some spacing */
+        .row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 5%;
+            margin-top: 5%;
+        }
+
+        /* Style the heading */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Style the form elements */
+        form {
+            width: 100%;
+            max-width: 400px; /* Adjust the max-width as needed */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: aliceblue;
+        }
+
+        /* Style form fields */
+        form input[type="text"],
+        form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        /* Style the submit button */
+        form button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Hover effect for the submit button */
+        form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="row" style="margin-left: 5%; margin-top: 5%;">
+    <h1>Update Profile</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ name_form.as_p }}
+        {{ picture_form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+    </div>
+</body>
+{% endblock content %}

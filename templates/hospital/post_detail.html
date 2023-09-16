@@ -1,0 +1,56 @@
+{% extends 'hospital/doctor_base.html' %}
+{% block content %}
+<style>
+    /* Add your CSS styles here */
+    .blog-post {
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-post img {
+        max-width: 100px;
+        height: auto;
+        border-radius: 50%;
+    }
+
+    .article-title {
+        font-size: 24px;
+    }
+
+    .article-metadata {
+        margin-top: 10px;
+    }
+
+    .article-content {
+        text-align: justify; /* Align text justified */
+    }
+
+    /* Adjust the margin for the navbar */
+    .navbar {
+        margin-left: 240px;
+    }
+</style>
+
+<div class="blog-post">
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ object.author }}</a>
+                <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+                {% if object.author == user %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            <h2 class="article-title">{{ object.title }}</h2>
+            <p class="article-content">{{ object.content }}</p>
+        </div>
+    </article>
+</div>
+{% endblock content %}

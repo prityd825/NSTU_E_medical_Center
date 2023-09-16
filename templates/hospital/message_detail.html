@@ -1,0 +1,11 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+    <h1>Message Conversation with {{ message.recipient.username }}</h1>
+        
+    <p>{{ message.content }}</p>
+
+    <a href="{% url 'message_list' %}">Back to Message List</a>
+{% endblock content %}
+
+

@@ -1,0 +1,114 @@
+{% extends 'hospital/patient_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      margin-top: -40px;
+      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+
+    /* Style the form container */
+    .form-content {
+      width: 80%; /* Adjust the width as needed */
+      max-width: 400px; /* Adjust the max-width as needed */
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: aliceblue;
+    }
+
+    /* Style form fields */
+    .form-content input[type="text"],
+    .form-content input[type="email"],
+    .form-content input[type="textarea"],
+    .form-content select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      background-color:gainsboro;
+    }
+    
+    /* Style the submit button */
+    .form-content .btnSubmit {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Hover effect for the submit button */
+    .form-content .btnSubmit:hover {
+      background-color: #0056b3;
+    }
+    .navbar{
+      margin-left: 240px;
+    }
+  </style>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <br><br>
+  {% if message %}
+  <script>
+    var a = "{{message}}";
+    alert(a);
+  </script>
+  {% endif %}
+
+  <form method="post" class="container register-form">
+    {% csrf_token %}
+    <div class="form">
+      <div class="note">
+        <p>Send Feedback</p>
+      </div>
+      <div class="form-content">
+        {{ model_form.as_p }}
+        <button type="submit" class="btnSubmit">Submit</button>
+      </div>
+    </div>
+  </form>
+</body>
+
+{% endblock content %}

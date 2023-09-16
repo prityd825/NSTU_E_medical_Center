@@ -1,0 +1,71 @@
+{% extends 'hospital/doctor_base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<head>
+<style>
+    /* Style the form container */
+    .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Center the form vertically on the page */
+        background-color: #f7f7f7; /* Background color for the form container */
+    }
+
+    /* Style the form */
+    form {
+        background-color: #ffffff; /* Background color for the form */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px; /* Adjust the max-width as needed */
+    }
+
+    /* Style form labels */
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* Style form input fields */
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    /* Style the submit button */
+    button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Hover effect for the submit button */
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    .navbar{
+        margin-left: 240px;
+      }
+</style>
+</head>
+
+<div class="row">
+    <form method="POST">
+        {% csrf_token %}
+        <label for="patient_email">Patient Email:</label>
+        <input type="email" name="patient_email" required>
+        <button type="submit">Next</button>
+    </form>
+</div>
+{% endblock content %}
