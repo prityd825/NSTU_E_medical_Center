@@ -25,11 +25,6 @@ from .models import Medicine
 from .models import Chat
 from datetime import datetime as dt
 
-
-
-
-
-
 # Create your views here.
 def home_view(request):
     if request.user.is_authenticated:
@@ -316,11 +311,6 @@ def update_accountant_view(request,pk):
             accountant.save()
             return redirect('admin-view-accountant')
     return render(request,'hospital/admin_update_accountant.html',context=mydict)
-
-
-
-
-
 
 
 
