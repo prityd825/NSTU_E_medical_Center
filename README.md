@@ -58,3 +58,31 @@ The project will provide a digital platform for doctors and patients to access m
 
 Moreover, the web application will offer a chat option, providing patients with the ability to receive online consultations from doctors without physically visiting the medical center. The website will also have a blog post option, where doctors can share articles on medical topics like first aid and other health issues. Finally, the web application will feature a medical accountant system, allowing the medical center to track the inflow and outflow of medicine, as well as maintain records of the types of medicine used by patients. Overall, this project aims to digitize the medical center at NSTU and provide a more convenient and efficient way for doctors and patients to access and manage medical services. The project will enable the medical center to provide better patient care, track medicine inflow and outflow, and maintain records of patient information, ultimately improving the quality of medical services provided by the center.
 
+
+---
+
+## 📸 Screenshots & UI Preview
+
+### 🏠 Portal & Admin Dashboard
+| Home / Portal Landing | Admin Dashboard Overview |
+| :---: | :---: |
+| ![NSTU Landing Page](screenshots/landing.png) | ![Admin Dashboard](screenshots/dashboard.png) |
+| *Public landing page for NSTU E-Medical Service* | *Real-time metrics for doctors, patients, and approvals* |
+
+### 👨‍⚕️ Staff & Patient Management
+| Doctor Management | Accountant Directory & Registration |
+| :---: | :---: |
+| ![Doctor Records](screenshots/doctors.png) | ![Accountant Management](screenshots/accountants.png) |
+| *View, update, and categorize medical staff* | *Manage inventory accountants and register new personnel* |
+
+| Patient Records & Updates | Appointment Workflow |
+| :---: | :---: |
+| ![Update Patient Details](screenshots/update_patient.png) | ![Appointment Approval](screenshots/appointments.png) |
+| *Manage patient profiles, symptoms, and medical records* | *Review and approve pending consultation appointments* |
+
+### 💊 Pharmacy & Inventory Tracking
+| Medicine Inventory Records | Department & Specialization View |
+| :---: | :---: |
+| ![Medicine Stock Records](screenshots/medicine_records.png) | ![Doctor Specializations](screenshots/specializations.png) |
+| *Track real-time stock levels, manufacturers, and dates* | *Filter medical specialists by clinical department* |
+
