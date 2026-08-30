@@ -60,29 +60,3 @@ Moreover, the web application will offer a chat option, providing patients with 
 
 
 ---
-
-## 📸 Screenshots & UI Preview
-
-### 🏠 Portal & Admin Dashboard
-| Home / Portal Landing | Admin Dashboard Overview |
-| :---: | :---: |
-| ![NSTU Landing Page](screenshots/landing.png) | ![Admin Dashboard](screenshots/dashboard.png) |
-| *Public landing page for NSTU E-Medical Service* | *Real-time metrics for doctors, patients, and approvals* |
-
-### 👨‍⚕️ Staff & Patient Management
-| Doctor Management | Accountant Directory & Registration |
-| :---: | :---: |
-| ![Doctor Records](screenshots/doctors.png) | ![Accountant Management](screenshots/accountants.png) |
-| *View, update, and categorize medical staff* | *Manage inventory accountants and register new personnel* |
-
-| Patient Records & Updates | Appointment Workflow |
-| :---: | :---: |
-| ![Update Patient Details](screenshots/update_patient.png) | ![Appointment Approval](screenshots/appointments.png) |
-| *Manage patient profiles, symptoms, and medical records* | *Review and approve pending consultation appointments* |
-
-### 💊 Pharmacy & Inventory Tracking
-| Medicine Inventory Records | Department & Specialization View |
-| :---: | :---: |
-| ![Medicine Stock Records](screenshots/medicine_records.png) | ![Doctor Specializations](screenshots/specializations.png) |
-| *Track real-time stock levels, manufacturers, and dates* | *Filter medical specialists by clinical department* |
-
