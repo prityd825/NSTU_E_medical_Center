@@ -6,6 +6,9 @@ while the center keeps track of patients, appointments and medicine stock in one
 
 We built it because the paper-and-queue system wasted everyone's time. Now most things can be done from a phone.
 
+**Live demo:** https://nstu-emedical.onrender.com
+(it runs on Render's free plan, so the first visit after a quiet spell can take up to a minute to wake up)
+
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/prityd825/NSTU_E_medical_Center)
 
 ---
