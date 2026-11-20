@@ -1,41 +1,15 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
-  <title>E-medical</title>
-  <style media="screen">
-    .jumbotron {
-      margin-bottom: 0px;
-    }
-
-    .jumbotron h1 {
-      text-align: center;
-    }
-  </style>
-
-</head>
-
-<body>
-
-  {% include "hospital/navbar.html" %}
-  <br><br>
-  <div class="jumbotron">
-    <h1 class="display-4">Your message sent successfully !</h1>
-    <p class="lead">We will respond to your feedback soon</p>
-    <hr class="my-4">
-    <p>Check other features of website !</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="/" role="button">HOME</a>
-    </p>
+{% extends 'hospital/homebase.html' %}
+{% block title %}Message sent · NSTU E-Medical{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="card status-card">
+    <div class="stat-icon tone-success"><i class="bi bi-check2-circle"></i></div>
+    <h1 class="h3">Message sent</h1>
+    <p class="text-muted mb-4">Thank you for getting in touch. We will reply to your email soon.</p>
+    <div class="d-flex justify-content-center gap-2 flex-wrap">
+      <a href="/" class="btn btn-primary">Back to home</a>
+      <a href="/blog/" class="btn btn-soft">Read the health blog</a>
+    </div>
   </div>
-
-  {% include "hospital/footer.html" %}
-</body>
-
-
-</html>
+</div>
+{% endblock content %}

@@ -1,31 +1,44 @@
 {% extends 'hospital/admin_base.html' %}
+{% block title %}Patient feedback · NSTU E-Medical{% endblock %}
+{% block page_title %}Patient feedback{% endblock %}
 {% block content %}
-{%load static%}
-   <br>
-  <h3>Patient's Feedback</h3>
-  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-    <thead>
-      <tr>
-        <th style="background-color: #f2f2f2; text-align: left; padding: 10px;">Patient Name</th>
-        <th style="background-color: #f2f2f2; text-align: left; padding: 10px;">Email</th>
-        <th style="background-color: #f2f2f2; text-align: left; padding: 10px;">Feedback</th>
-      </tr>
-    </thead>
-    <tbody>
+<div class="page-header">
+  <div>
+    <h1>Patient feedback</h1>
+    <p>What patients have told us about their visits. Use it to improve the service.</p>
+  </div>
+</div>
+
+<div class="card table-card">
+  {% if feedback_items %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:320px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search feedback" data-table-filter="#feedbackTable" aria-label="Search feedback">
+    </div>
+    <span class="text-muted small">{{ feedback_items|length }} message{{ feedback_items|length|pluralize }}</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="feedbackTable">
+      <thead><tr><th>Patient</th><th>Feedback</th><th>Received</th></tr></thead>
+      <tbody>
       {% for feedback in feedback_items %}
         <tr>
-          <td style="border: 1px solid #ddd; padding: 10px;">{{ feedback.patientName }}</td>
-          <td style="border: 1px solid #ddd; padding: 10px;">{{ feedback.email }}</td>
-          <td style="border: 1px solid #ddd; padding: 10px;">{{ feedback.feedback }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="3" style="text-align: center; font-style: italic; color: #888; margin-top: 20px;">No feedback available.</td>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=None name=feedback.patientName cls='avatar-sm' %}
+              <div class="min-w-0"><div class="name">{{ feedback.patientName }}</div><div class="sub"><a href="mailto:{{ feedback.email }}">{{ feedback.email }}</a></div></div>
+            </div>
+          </td>
+          <td style="min-width:260px">{{ feedback.feedback|linebreaksbr }}</td>
+          <td class="text-nowrap">{{ feedback.date_submitted|date:"d M Y" }}</td>
         </tr>
       {% endfor %}
-    </tbody>
-  </table>
-
-
-
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-chat-square-heart" title="No feedback yet" text="Feedback that patients send from their dashboard will show up here." %}
+  {% endif %}
+</div>
 {% endblock content %}

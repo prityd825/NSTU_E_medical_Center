@@ -1,117 +1,34 @@
-<!DOCTYPE html>
+{% extends 'hospital/homebase.html' %}
+{% block title %}Doctor registration · NSTU E-Medical{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="card auth-card wide">
+    <div class="auth-icon tone-accent"><i class="bi bi-clipboard2-pulse"></i></div>
+    <h1>Register as a doctor</h1>
+    <p class="sub">Create your doctor profile. An administrator will review and approve it before you can sign in.</p>
 
-{% load widget_tweaks %}
-<html lang="en" dir="ltr">
+    {% include 'hospital/partials/form_errors.html' with form=userForm %}
+    {% include 'hospital/partials/form_errors.html' with form=doctorForm %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>E-medical</title>
-  <style type="text/css">
-    body {
-      color: #aa082e;
-      background-color: #b6bde7;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    a:link {
-      text-decoration: none;
-    }
-
-    .note {
-      text-align: center;
-      height: 80px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-      color: #fff;
-      font-weight: bold;
-      line-height: 80px;
-    }
-
-    .form-content {
-      padding: 5%;
-      border: 1px solid #ced4da;
-      margin-bottom: 2%;
-    }
-
-    .form-control {
-      border-radius: 1.5rem;
-    }
-
-    .btnSubmit {
-      border: none;
-      border-radius: 1.5rem;
-      padding: 1%;
-      width: 20%;
-      cursor: pointer;
-      background: #0062cc;
-      color: #fff;
-    }
-  </style>
-
-</head>
-
-
-<body>
-  {% include "hospital/navbar.html" %}
-  <br>
-  <br>
-  <br>
-  <br>
-
-
-
-
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="container register-form">
-      <div class="form">
-        <div class="note">
-          <p>Register In Hospital</p>
-        </div>
-
-        <div class="form-content">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
-              </div>
-              <div class="form-group">
-                {% render_field userForm.username class="form-control" placeholder="Username" %}
-              </div>
-              <div class="form-group">
-                {% render_field doctorForm.department class="form-control" placeholder="Department" %}
-              </div>
-              <div class="form-group">
-                {% render_field doctorForm.address class="form-control" placeholder="Address" %}
-              </div>
-
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
-              </div>
-              <div class="form-group">
-                {% render_field userForm.password class="form-control" placeholder="Password" %}
-              </div>
-              <div class="form-group">
-                {% render_field userForm.email class="form-control"  placeholder="email" %}
-              </div>
-              <div class="form-group">
-                {% render_field doctorForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
-              </div>
-
-            </div>
-          </div>
-          <button type="submit" class="btnSubmit">Register</button>
-          <div class="text-center">Already have an account? <a href="doctorlogin">Login here</a></div>
-        </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <div class="form-section-title mt-0">Professional details</div>
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=userForm.first_name wrap="col-md-6 mb-3" placeholder="First name" %}
+        {% include 'hospital/partials/field.html' with field=userForm.last_name wrap="col-md-6 mb-3" placeholder="Last name" %}
+        {% include 'hospital/partials/field.html' with field=doctorForm.department wrap="col-md-6 mb-3" label="Specialisation" %}
+        {% include 'hospital/partials/field.html' with field=userForm.email wrap="col-md-6 mb-3" label="Email" placeholder="you@example.com" %}
+        {% include 'hospital/partials/field.html' with field=doctorForm.address wrap="col-12 mb-3" placeholder="Address" %}
       </div>
-    </div>
-
-  </form>
-
-  {% include "hospital/footer.html" %}
-</body>
-
-
-</html>
+      <div class="form-section-title">Account</div>
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=userForm.username wrap="col-md-6 mb-3" placeholder="Choose a username" %}
+        {% include 'hospital/partials/field.html' with field=userForm.password wrap="col-md-6 mb-3" placeholder="Choose a password" %}
+        {% include 'hospital/partials/field.html' with field=doctorForm.profile_pic wrap="col-12 mb-3" label="Profile photo" %}
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">Submit for approval</button>
+    </form>
+    <div class="auth-switch">Already registered? <a href="/doctorlogin" class="fw-semibold">Sign in</a></div>
+  </div>
+</div>
+{% endblock content %}

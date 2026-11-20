@@ -1,70 +1,54 @@
 {% extends 'hospital/doctor_base.html' %}
+{% block title %}My patients · NSTU E-Medical{% endblock %}
+{% block page_title %}Patients{% endblock %}
 {% block content %}
-{%load static%}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-  </style>
-</head>
-
-
-
-<div class="container">
-
-    <form  action="/search" method="get" style="margin-left:70%;" class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="query" id="query" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
- 
-
-  {% if patients %}
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Your Total Patient List</h6>
-    </div>
-    <table class="table table-hover" id="dev-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Profile Picture</th>
-          <th>Symptoms</th>
-          <th>email</th>
-          <th>Address</th>
-
-        </tr>
-      </thead>
-      {% for p in patients %}
-      <tr>
-        <td> {{p.get_name}}</td>
-        <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{p.symptoms}}</td>
-        <td>{{p.email}}</td>
-        <td>{{p.address}}</td>
-      </tr>
-      {% endfor %}
-    </table>
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/doctor-appointment">Appointments</a></li><li class="breadcrumb-item active" aria-current="page">My patients</li></ol></nav>
+    <h1>My patients</h1>
+    <p>Patients who have booked an appointment with you. Search by name or email.</p>
   </div>
-  {%else%}
-  <br><br><br>
-  <h4 style="text-align: center;color: red;">No Patient Found !!!</h4>
-  {% endif %}
-
-
 </div>
 
+<div class="card table-card">
+  <div class="card-header">
+    <form action="/search" method="get" class="d-flex gap-2 flex-grow-1" style="max-width:420px" role="search">
+      <div class="search-box flex-grow-1">
+        <i class="bi bi-search"></i>
+        <input type="search" class="form-control form-control-sm" placeholder="Name or email" name="query" id="query" value="{{ query }}" aria-label="Search patients">
+      </div>
+      <button class="btn btn-sm btn-primary" type="submit">Search</button>
+    </form>
+    {% if query %}<a href="/search?query=" class="btn btn-sm btn-light">Clear search</a>{% endif %}
+  </div>
+  {% if patients %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Patient</th><th>Address</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+      {% for p in patients %}
+        <tr>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=p.profile_pic name=p.get_name %}
+              <div><div class="name">{{ p.get_name }}</div><div class="sub">{{ p.email|default:"No email" }}</div></div>
+            </div>
+          </td>
+          <td>{{ p.address }}</td>
+          <td>
+            <div class="cell-actions">
+              <a class="btn btn-sm btn-soft btn-icon" href="/prescribe"><i class="bi bi-file-earmark-medical"></i> Prescribe</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% elif query %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-search" title="No patients found" text="No patient matches your search. Try another name or email." %}
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-people" title="No patients yet" text="Patients appear here after they book an appointment with you." %}
+  {% endif %}
+</div>
 {% endblock content %}

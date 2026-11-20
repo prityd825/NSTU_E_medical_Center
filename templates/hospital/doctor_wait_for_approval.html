@@ -1,48 +1,20 @@
-<!DOCTYPE html>
-
-<html lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>E-medical</title>
-
-
-  <style media="screen">
-    .jumbotron {
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-
-    .jumbotron h1 {
-      text-align: center;
-    }
-
-    .alert {
-      margin: 0px;
-    }
-  </style>
-
-</head>
-
-<body>
-  {% include "hospital/navbar.html" %}
-  <br>
-  <br>
-
-  <div class="jumbotron" style="margin-top: 0px;
-    margin-bottom: 0px;">
-    <h1 class="display-4">Hello {{request.user.first_name}}</h1>
-    <p class="lead">Your Account is not approved till now <br><br>Our doctor is checking your profile <br><br> Soon your Account will be confirmed !!!</p>
-    <hr class="my-4">
-    <p>Check Later</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout For Now</a>
-    </p>
+{% extends 'hospital/homebase.html' %}
+{% block title %}Waiting for approval · NSTU E-Medical{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="card status-card">
+      <div class="stat-icon tone-warning"><i class="bi bi-hourglass-split"></i></div>
+      <h1 class="h3">Hello{% if request.user.first_name %}, Dr. {{ request.user.first_name }}{% endif %}</h1>
+      <p class="text-muted mb-2">Your doctor account has been created and is <strong>waiting for approval</strong> from the medical center administrator.</p>
+      <p class="text-muted mb-4">This usually does not take long. Once it is approved, sign in again to reach your dashboard, appointments and prescriptions.</p>
+      <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <a href="/" class="btn btn-primary btn-icon"><i class="bi bi-house"></i> Back to home</a>
+        <form method="post" action="{% url 'logout' %}" class="m-0">{% csrf_token %}
+          <button type="submit" class="btn btn-light btn-icon"><i class="bi bi-box-arrow-left"></i> Sign out for now</button>
+        </form>
+      </div>
+    </div>
   </div>
-
-  {% include "hospital/footer.html" %}
-</body>
-
-
-</html>
+</section>
+{% endblock content %}

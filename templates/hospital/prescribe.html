@@ -1,71 +1,35 @@
 {% extends 'hospital/doctor_base.html' %}
-{% load crispy_forms_tags %}
+{% block title %}Write prescription · NSTU E-Medical{% endblock %}
+{% block page_title %}Write prescription{% endblock %}
 {% block content %}
-<head>
-<style>
-    /* Style the form container */
-    .row {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* Center the form vertically on the page */
-        background-color: #f7f7f7; /* Background color for the form container */
-    }
+<div class="page-header">
+  <div>
+    <h1>Write a prescription</h1>
+    <p>Start by entering the email address the patient registered with.</p>
+  </div>
+  <a href="/prescription_history" class="btn btn-soft btn-icon"><i class="bi bi-clock-history"></i> Prescription history</a>
+</div>
 
-    /* Style the form */
-    form {
-        background-color: #ffffff; /* Background color for the form */
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        max-width: 400px; /* Adjust the max-width as needed */
-    }
-
-    /* Style form labels */
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    /* Style form input fields */
-    input[type="email"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        outline: none;
-    }
-
-    /* Style the submit button */
-    button[type="submit"] {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    /* Hover effect for the submit button */
-    button[type="submit"]:hover {
-        background-color: #0056b3;
-    }
-    .navbar{
-        margin-left: 240px;
-      }
-</style>
-</head>
-
-<div class="row">
+<div class="card" style="max-width:520px">
+  <div class="card-body p-4">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div class="stat-icon tone-primary"><i class="bi bi-person-vcard"></i></div>
+      <div>
+        <h2 class="h6 mb-1">Step 1 of 2 &middot; Find the patient</h2>
+        <p class="text-muted small mb-0">Next you will add symptoms, medicines, tests and advice.</p>
+      </div>
+    </div>
     <form method="POST">
-        {% csrf_token %}
-        <label for="patient_email">Patient Email:</label>
-        <input type="email" name="patient_email" required>
-        <button type="submit">Next</button>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label" for="patient_email">Patient email <span class="text-danger">*</span></label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" class="form-control" id="patient_email" name="patient_email" value="{{ patient_email|default:'' }}" placeholder="patient@example.com" autocomplete="off" required autofocus>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 btn-icon">Next <i class="bi bi-arrow-right"></i></button>
     </form>
+  </div>
 </div>
 {% endblock content %}

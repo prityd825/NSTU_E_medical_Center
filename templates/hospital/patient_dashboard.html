@@ -1,79 +1,61 @@
 {% extends 'hospital/patient_base.html' %}
-{% load static %}
+{% block title %}My health · NSTU E-Medical{% endblock %}
+{% block page_title %}My health{% endblock %}
 {% block content %}
-    <head>
-        <style>
-                /* Style for the table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+<div class="page-header">
+  <div>
+    <h1>Hello, {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>Book a visit, talk to a doctor or download your prescriptions, all in one place.</p>
+  </div>
+  <a href="/patient-book-appointment" class="btn btn-primary btn-icon"><i class="bi bi-calendar-plus"></i> Book appointment</a>
+</div>
 
-        /* Style for table headers */
-        th {
-            background-color: #f2f2f2;
-            text-align: left;
-            padding: 10px;
-            font-weight: bold;
-            border-bottom: 1px solid #ddd;
-        }
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/action_tile.html' with href="/patient-book-appointment" icon="bi-calendar-plus" tone="primary" title="Book an appointment" text="Choose a doctor and tell us what is bothering you." cta="Book now" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/action_tile.html' with href="/select_doctor/" icon="bi-chat-dots" tone="accent" title="Message a doctor" text="Ask a question and get a reply from a doctor." cta="Start a chat" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/action_tile.html' with href="/patient-view-doctor" icon="bi-person-badge" tone="success" title="Find a doctor" text="Browse doctors by name or specialisation." cta="Browse" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/action_tile.html' with href="/patient-feedback" icon="bi-star" tone="warning" title="Give feedback" text="Tell us how we did and how we can improve." cta="Share feedback" %}
+  </div>
+</div>
 
-        /* Style for table rows */
-        tr {
-            border-bottom: 1px solid #ddd;
-        }
-
-        /* Style for alternating row background colors */
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        /* Style for table cells */
-        td {
-            padding: 10px;
-        }
-
-        /* Style for prescription links */
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        /* Style for strong elements within prescription links */
-        a strong {
-            font-weight: bold;
-        }
-
-        /* Style for the "View prescription" text */
-        a span {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .navbar{
-            margin-left: 240px;
-        }
-    </style>
-</head>
-<div style="margin: 100px;">
-    <h2>Your Prescriptions</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Prescription</th>
-                <th>Doctor</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for prescription in prescriptions %}
-                <tr>
-                    <td><a href="{% url 'generate_pdf_patient' prescription.id %}" target="_blank"><span><strong>View prescription</strong></span></a></td>
-                    <td>{{ prescription.doctor }}</td>
-                    <td>{{ prescription.date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+<div class="card table-card">
+  <div class="card-header">
+    <h2 class="card-title">My prescriptions</h2>
+    {% if prescriptions %}<span class="badge badge-soft-primary">{{ prescriptions|length }} total</span>{% endif %}
+  </div>
+  {% if prescriptions %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Doctor</th><th>Date</th><th class="text-end">Prescription</th></tr></thead>
+      <tbody>
+      {% for prescription in prescriptions %}
+        <tr>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=prescription.doctor.profile_pic name=prescription.doctor.get_name cls='avatar-sm' %}
+              <div><div class="name">{{ prescription.doctor.get_name }}</div><div class="sub">{{ prescription.doctor.department }}</div></div>
+            </div>
+          </td>
+          <td class="text-nowrap">{{ prescription.date|date:"d M Y" }}</td>
+          <td>
+            <div class="cell-actions">
+              <a class="btn btn-sm btn-soft btn-icon" href="{% url 'generate_pdf_patient' prescription.id %}" target="_blank" rel="noopener"><i class="bi bi-file-earmark-arrow-down"></i> Download PDF</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
     </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-file-earmark-medical" title="No prescriptions yet" text="After a doctor sees you, your prescriptions will appear here to download." href="/patient-book-appointment" cta="Book an appointment" %}
+  {% endif %}
 </div>
 {% endblock content %}

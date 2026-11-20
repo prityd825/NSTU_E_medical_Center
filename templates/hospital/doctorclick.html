@@ -1,20 +1,5 @@
 {% extends 'hospital/homebase.html' %}
-
-
+{% block title %}Doctors · NSTU E-Medical{% endblock %}
 {% block content %}
-
-<br>
-<br>
-
-<div class="jumbotron" style="margin-bottom:0px;">
-  <h1 class="display-4" style="text-align:center;">Hello, Doctor</h1>
-  <p class="lead">Welcome to E-medical Service.</p>
-  <hr class="my-4">
-  <p>You can access various features after Login/SignUp.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="/doctorsignup" role="button">Signup</a>
-    <a class="btn btn-primary btn-lg" href="/doctorlogin" role="button">Login</a>
-  </p>
-</div>
-
+{% include 'hospital/partials/role_landing.html' with role="Doctor" icon="bi-clipboard2-pulse" tone="accent" login_url="/doctorlogin" signup_url="/doctorsignup" text="See your appointments, write digital prescriptions, chat with patients and share health tips." %}
 {% endblock content %}

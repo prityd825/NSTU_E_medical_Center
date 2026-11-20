@@ -1,11 +1,21 @@
 {% extends 'hospital/patient_base.html' %}
-{% load static %}
+{% block title %}Message · NSTU E-Medical{% endblock %}
+{% block page_title %}Messages{% endblock %}
 {% block content %}
-    <h1>Message Conversation with {{ message.recipient.username }}</h1>
-        
-    <p>{{ message.content }}</p>
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="{% url 'message_list' %}">Messages</a></li><li class="breadcrumb-item active" aria-current="page">Message</li></ol></nav>
+    <h1>Conversation with {{ message.recipient.get_full_name|default:message.recipient.username }}</h1>
+    <p>Sent {{ message.timestamp|date:"d M Y, H:i" }}.</p>
+  </div>
+</div>
 
-    <a href="{% url 'message_list' %}">Back to Message List</a>
+<div class="card" style="max-width:720px">
+  <div class="card-body p-4">
+    <div class="post-body">{{ message.content }}</div>
+    <div class="form-actions">
+      <a href="{% url 'message_list' %}" class="btn btn-light btn-icon"><i class="bi bi-arrow-left"></i> Back to messages</a>
+    </div>
+  </div>
+</div>
 {% endblock content %}
-
-

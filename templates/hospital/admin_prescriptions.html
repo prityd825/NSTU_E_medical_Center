@@ -1,0 +1,46 @@
+{% extends 'hospital/admin_base.html' %}
+{% block title %}Prescriptions · NSTU E-Medical{% endblock %}
+{% block page_title %}Prescriptions{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>All prescriptions</h1>
+    <p>Every prescription written at the medical center. Open one to see or print the PDF.</p>
+  </div>
+</div>
+
+<div class="card table-card">
+  {% if prescriptions %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:340px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search by doctor, patient or symptom" data-table-filter="#rxTable" aria-label="Search prescriptions">
+    </div>
+    <span class="badge badge-soft-primary">{{ prescriptions|length }} total</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="rxTable">
+      <thead><tr><th>Date</th><th>Patient</th><th>Doctor</th><th>Symptoms</th><th class="text-end">PDF</th></tr></thead>
+      <tbody>
+      {% for p in prescriptions %}
+        <tr>
+          <td class="text-nowrap">{{ p.date|date:"d M Y" }}</td>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=p.patient.profile_pic name=p.patient.get_name cls='avatar-sm' %}
+              <div><div class="name">{{ p.patient.get_name }}</div><div class="sub">{{ p.patient.email }}</div></div>
+            </div>
+          </td>
+          <td><div class="name fw-semibold">Dr. {{ p.doctor.get_name }}</div><div class="small text-muted">{{ p.doctor.department }}</div></td>
+          <td class="text-muted">{{ p.symptoms|default:"Not filled in"|truncatechars:60 }}</td>
+          <td><div class="cell-actions"><a class="btn btn-sm btn-soft btn-icon" href="{% url 'generate_pdf' p.id %}" target="_blank" rel="noopener"><i class="bi bi-file-earmark-pdf"></i> Open</a></div></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-file-earmark-medical" title="No prescriptions yet" text="Prescriptions appear here as soon as doctors write them." %}
+  {% endif %}
+</div>
+{% endblock content %}

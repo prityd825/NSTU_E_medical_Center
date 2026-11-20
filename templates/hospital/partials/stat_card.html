@@ -1,0 +1,12 @@
+{% comment %}
+  Usage: {% include 'hospital/partials/stat_card.html' with value=12 label="Doctors" icon="bi-person-badge" tone="primary" note="3 waiting for approval" note_tone="warning" href="/admin-doctor" %}
+  tone: primary | accent | warning | danger | success | violet
+{% endcomment %}
+{% if href %}<a href="{{ href }}" class="card stat-card">{% else %}<div class="card stat-card">{% endif %}
+  <div class="stat-icon tone-{{ tone|default:'primary' }}"><i class="bi {{ icon }}"></i></div>
+  <div class="min-w-0">
+    <div class="stat-value">{{ value|default:"0" }}</div>
+    <div class="stat-label">{{ label }}</div>
+    {% if note %}<div class="stat-note text-{{ note_tone|default:'muted' }}">{{ note }}</div>{% endif %}
+  </div>
+{% if href %}</a>{% else %}</div>{% endif %}

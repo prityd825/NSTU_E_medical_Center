@@ -1,62 +1,40 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-  <style type="text/css">
-    .bs-example {
-      margin: 0px;
-
-    }
-
-    .navbar-brand {
-      font-size: 20px;
-      font-family: sans-serif;
-
-    }
-  </style>
-</head>
-
-<body>
-
-
-
-  <div class="bs-example">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:#337AB7;">
-      <a href="/" class="navbar-brand">E-medical</a>
-      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-        <div class="navbar-nav">
-
-          <a href="/adminclick" class="nav-item nav-link">Admin</a>
-          <a href="/doctorclick" class="nav-item nav-link">Doctor</a>
-          <a href="/patientclick" class="nav-item nav-link">Patient</a>
-          <a href="/accountantclick" class="nav-item nav-link">Accountant</a>
-
-
-        </div>
-
-        <div class="navbar-nav">
-          <a href="/blog" class="nav-item nav-link">Blog</a> 
-          <a href="/aboutus" class="nav-item nav-link">About Us</a>
-        </div>
-
+{% load em_tags %}
+<nav class="navbar navbar-expand-lg public-nav sticky-top py-2">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+      <span>NSTU E-Medical</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav" aria-controls="publicNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="publicNav">
+      <ul class="navbar-nav mx-lg-auto gap-lg-1 my-3 my-lg-0">
+        <li class="nav-item"><a class="nav-link {% active '/' %}" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% active '/blog' %}" href="/blog/">Health Blog</a></li>
+        <li class="nav-item"><a class="nav-link {% active '/aboutus' %}" href="/aboutus">About</a></li>
+        <li class="nav-item"><a class="nav-link {% active '/contactus' %}" href="/contactus">Contact</a></li>
+      </ul>
+      <div class="d-flex flex-column flex-lg-row gap-2">
+        {% if user.is_authenticated %}
+          <a class="btn btn-primary btn-icon" href="/afterlogin"><i class="bi bi-speedometer2"></i> My dashboard</a>
+          <form method="post" action="{% url 'logout' %}" class="m-0">{% csrf_token %}
+            <button type="submit" class="btn btn-outline-secondary w-100">Sign out</button>
+          </form>
+        {% else %}
+          <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">Sign in</button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+              <li><a class="dropdown-item rounded py-2" href="/patientlogin"><i class="bi bi-person-heart me-2 text-primary"></i>Patient</a></li>
+              <li><a class="dropdown-item rounded py-2" href="/doctorlogin"><i class="bi bi-clipboard2-pulse me-2 text-primary"></i>Doctor</a></li>
+              <li><a class="dropdown-item rounded py-2" href="/accountantlogin"><i class="bi bi-capsule me-2 text-primary"></i>Accountant</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item rounded py-2" href="/adminlogin"><i class="bi bi-shield-lock me-2 text-primary"></i>Administrator</a></li>
+            </ul>
+          </div>
+          <a class="btn btn-primary" href="/patientsignup">Register as patient</a>
+        {% endif %}
       </div>
-    </nav>
+    </div>
   </div>
-
- 
-
-</body>
-
-</html>
+</nav>

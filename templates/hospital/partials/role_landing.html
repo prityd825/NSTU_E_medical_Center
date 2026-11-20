@@ -1,0 +1,16 @@
+{% comment %}
+  Role landing card used by adminclick / doctorclick / patientclick / accountantclick.
+  Usage: {% include 'hospital/partials/role_landing.html' with role="Doctor" icon="bi-clipboard2-pulse" tone="accent" login_url="/doctorlogin" signup_url="/doctorsignup" text="..." %}
+{% endcomment %}
+<div class="auth-wrap">
+  <div class="card status-card">
+    <div class="stat-icon tone-{{ tone|default:'primary' }}"><i class="bi {{ icon }}"></i></div>
+    <h1 class="h3">Hello, {{ role|lower }}</h1>
+    <p class="text-muted mb-4">{{ text }}</p>
+    <div class="d-grid gap-2 mx-auto" style="max-width:320px">
+      <a class="btn btn-primary btn-lg" href="{{ login_url }}">Sign in</a>
+      {% if signup_url %}<a class="btn btn-soft btn-lg" href="{{ signup_url }}">Create an account</a>{% endif %}
+    </div>
+    {% if signup_url %}<p class="small text-muted mt-3 mb-0">New accounts are approved by an administrator before first sign in.</p>{% endif %}
+  </div>
+</div>

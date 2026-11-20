@@ -1,0 +1,28 @@
+{% comment %}
+  Renders one form field with label, help text and errors.
+  Usage: {% include 'hospital/partials/field.html' with field=form.username %}
+  Optional: label="Custom label" placeholder="..." wrap="col-md-6 mb-3" rows="3"
+{% endcomment %}{% load widget_tweaks %}{% with wt=field|widget_type ph=placeholder|default_if_none:"" %}{% firstof rows "4" as nrows %}
+<div class="{{ wrap|default:'mb-3' }}{% if field.errors %} field-error{% endif %}">
+  {% if wt == 'checkboxinput' %}
+    <div class="form-check form-switch">
+      {% render_field field class="form-check-input" role="switch" %}
+      <label class="form-check-label" for="{{ field.id_for_label }}">{{ label|default:field.label }}</label>
+    </div>
+  {% else %}
+    <label class="form-label" for="{{ field.id_for_label }}">{{ label|default:field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
+    {% if wt == 'select' or wt == 'selectmultiple' %}
+      {% render_field field class="form-select" %}
+    {% elif wt == 'textarea' %}
+      {% render_field field class="form-control" rows=nrows placeholder=ph %}
+    {% elif wt == 'dateinput' %}
+      {% render_field field class="form-control" type="date" %}
+    {% elif wt == 'clearablefileinput' or wt == 'fileinput' %}
+      {% render_field field class="form-control" accept="image/*" %}
+    {% else %}
+      {% render_field field class="form-control" placeholder=ph %}
+    {% endif %}
+  {% endif %}
+  {% if field.help_text and wt != 'passwordinput' and wt != 'textinput' %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+  {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+</div>{% endwith %}

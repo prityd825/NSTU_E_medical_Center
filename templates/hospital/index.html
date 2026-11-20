@@ -1,73 +1,101 @@
 {% extends 'hospital/homebase.html' %}
 {% load static %}
-
-
 {% block content %}
 
+<section class="hero" style="--hero-img: url('{% static 'images/bangabandhu mural.jpg' %}')">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="hero-chip mb-3"><i class="bi bi-hospital"></i> Noakhali Science and Technology University</span>
+        <h1 class="mb-3">Your campus medical center, now online.</h1>
+        <p class="lead mb-4">Book appointments, chat with doctors, get digital prescriptions and keep your medical history in one place. Free for every member of the NSTU community.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="/patientsignup" class="btn btn-light btn-lg btn-icon"><i class="bi bi-person-plus"></i> Register as patient</a>
+          <a href="/patientlogin" class="btn btn-outline-light btn-lg">I already have an account</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-info">
+          <div class="item"><i class="bi bi-geo-alt-fill"></i><div><div class="t">Where</div><div class="d">Administration Building, Ground Floor, Room 117</div></div></div>
+          <div class="item"><i class="bi bi-clock-fill"></i><div><div class="t">Regular hours</div><div class="d">8:30 AM to 5:00 PM on working days</div></div></div>
+          <div class="item"><i class="bi bi-truck-front-fill"></i><div><div class="t">Emergency &amp; ambulance</div><div class="d">Available 24 hours, every day</div></div></div>
+          <div class="item"><i class="bi bi-capsule"></i><div><div class="t">Medicine</div><div class="d">Free of cost for all university members</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<head>
-  <style media="screen">
-    .jumbotron {
-      margin-top: 0px;
-      margin-bottom: 0px;
-      background-image: url('{% static "images\bangabandhu mural.jpg" %}');
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-eyebrow">Get started</div>
+      <h2 class="section-title">Who are you?</h2>
+      <p class="section-lead mx-auto">Use the <strong>Sign in</strong> menu at the top to open your account. New patients and staff can register; an administrator approves every new account.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card role-card">
+          <div class="stat-icon tone-primary"><i class="bi bi-person-heart"></i></div>
+          <h3>Patient</h3>
+          <p>Students, teachers, officers, staff and their families.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card role-card">
+          <div class="stat-icon tone-accent"><i class="bi bi-clipboard2-pulse"></i></div>
+          <h3>Doctor</h3>
+          <p>See appointments, write prescriptions and answer messages.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card role-card">
+          <div class="stat-icon tone-violet"><i class="bi bi-capsule"></i></div>
+          <h3>Accountant</h3>
+          <p>Keep medicine stock and usage records up to date.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card role-card">
+          <div class="stat-icon tone-warning"><i class="bi bi-shield-lock"></i></div>
+          <h3>Administrator</h3>
+          <p>Approve accounts and manage the whole medical center.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    .jumbotron h5,
-    h3 {
-      text-align: center;
-    }
+<section class="section bg-white border-top border-bottom">
+  <div class="container">
+    <div class="row g-4 g-lg-5 align-items-center">
+      <div class="col-lg-5">
+        <div class="section-eyebrow">What you can do</div>
+        <h2 class="section-title">Less waiting in line, better care.</h2>
+        <p class="section-lead">The medical center provides free, experienced general practitioner and emergency care to the whole university community. The E-Medical service brings that care to your phone.</p>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-4">
+          <div class="col-sm-6"><div class="feature"><div class="stat-icon tone-primary"><i class="bi bi-calendar-check"></i></div><div><h4>Book appointments</h4><p>Pick a doctor and describe your problem before you come in.</p></div></div></div>
+          <div class="col-sm-6"><div class="feature"><div class="stat-icon tone-accent"><i class="bi bi-chat-dots"></i></div><div><h4>Chat with a doctor</h4><p>Ask questions and get advice without visiting the center.</p></div></div></div>
+          <div class="col-sm-6"><div class="feature"><div class="stat-icon tone-success"><i class="bi bi-file-earmark-medical"></i></div><div><h4>Digital prescriptions</h4><p>Download every prescription as a PDF, any time.</p></div></div></div>
+          <div class="col-sm-6"><div class="feature"><div class="stat-icon tone-violet"><i class="bi bi-journal-medical"></i></div><div><h4>Health blog</h4><p>First aid and health tips written by our doctors.</p></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-
-    .alert {
-      margin: 0px;
-    }
-
-
-
-    .glow {
-      font-size: 40px;
-      color: white;
-      text-align: center;
-      
-    }
-
-    @-webkit-keyframes glow {
-      from {
-        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000, 0 0 50px #9554b3, 0 0 60px #9554b3, 0 0 70px #9554b3;
-      }
-
-      to {
-        text-shadow: 0 0 20px #eeeeee, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-      }
-    }
-  </style>
-</head>
-<br>
-<br>
-
-<div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
-  <br>
-  <h5 class="display-10 glow">Noakhali Science and Technology University</h5>
-  <p class="display-8 glow">E-medical service</p>
-  <br><br>
-</div>
-
-<br><br>
-<div style="color: cornflowerblue; margin: 0 100px 0 100px; text-align: center;">
-  <h3>
-    Welcome to the Medical Center of NSTU
-  </h3>
-</div>
-<div style="margin: 0 100px 0 100px; text-align: center;">
-  <p>The medical center of Noakhali science and technology university (NSTU) temporary located administration building ground floor , room no-117,offers free experienced general practitioner and emergency medical care services to all members (students, teachers, officers, staff, also family members of the teachers, officers, staff­ ) of the university community.
-
-    The center provides service usually 8.30 am to 5.00 pm in working days but provide emergency services 24 hours. All members of the university get medicine from the medical center at free of cost .The center also has an ambulance, for 24 hours service.</p>
-</div>
-{% comment %} {% include "hospital/admin_doctor_patient_card.html" %} {% endcomment %}
-<br><br><br>
-
+<section class="section">
+  <div class="container">
+    <div class="card p-4 p-lg-5 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3" style="background:linear-gradient(120deg,#0f766e,#0284c7);color:#fff;border:0">
+      <div>
+        <h2 class="h3 mb-1">Medical emergency?</h2>
+        <p class="mb-0" style="color:#d5ecea">Come straight to the medical center. Emergency care and the ambulance are available 24 hours.</p>
+      </div>
+      <a href="/contactus" class="btn btn-light btn-lg text-primary flex-shrink-0">Contact the center</a>
+    </div>
+  </div>
+</section>
 
 {% endblock content %}

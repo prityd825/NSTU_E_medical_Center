@@ -1,0 +1,43 @@
+{% extends 'hospital/admin_base.html' %}
+{% block title %}Doctors by specialisation · NSTU E-Medical{% endblock %}
+{% block page_title %}Doctors{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/admin-doctor">Doctors</a></li><li class="breadcrumb-item active" aria-current="page">By specialisation</li></ol></nav>
+    <h1>Doctors by specialisation</h1>
+    <p>Active doctors grouped by department, so you can see which specialities are covered.</p>
+  </div>
+  <a href="/admin-view-doctor" class="btn btn-soft btn-icon"><i class="bi bi-person-lines-fill"></i> All doctors</a>
+</div>
+
+{% if doctors %}
+{% regroup doctors|dictsort:"department" by department as departments %}
+<div class="row g-3">
+  {% for dept in departments %}
+  <div class="col-md-6 col-xl-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <h2 class="card-title d-flex align-items-center gap-2"><i class="bi bi-diagram-3 text-primary"></i>{{ dept.grouper }}</h2>
+        <span class="badge badge-soft-accent">{{ dept.list|length }} doctor{{ dept.list|length|pluralize }}</span>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for d in dept.list %}
+        <li class="list-group-item">
+          <div class="cell-person">
+            {% include 'hospital/partials/avatar.html' with pic=d.profile_pic name=d.get_name cls='avatar-sm' %}
+            <div class="min-w-0"><div class="name">{{ d.get_name }}</div><div class="sub text-truncate">{{ d.email|default:d.user.email|default:"No email" }}</div></div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card">
+  {% include 'hospital/partials/empty_state.html' with icon="bi-diagram-3" title="No active doctors" text="Once doctors are added or approved they appear here, grouped by department." href="/admin-add-doctor" cta="Add doctor" %}
+</div>
+{% endif %}
+{% endblock content %}

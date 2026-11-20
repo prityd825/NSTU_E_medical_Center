@@ -37,7 +37,7 @@ class Doctor(models.Model):
     def get_id(self):
         return self.user.id
     def __str__(self):
-        return "{} ({})".format(self.user.first_name,self.department)
+        return "Dr. {} ({})".format(self.get_name.strip() or self.user.username, self.department)
     def iden():
         return "doctor"
 
@@ -76,7 +76,8 @@ class Patient(models.Model):
     def get_id(self):
         return self.user.id
     def __str__(self):
-        return self.user.first_name
+        name = self.get_name.strip() or self.user.username
+        return f"{name} ({self.email})" if self.email else name
     def iden(self):
         return "patient"
 
@@ -132,7 +133,7 @@ class PatientFeedback(models.Model):
     date_submitted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "Feedback from {self.patient_name} ({self.email})"    
+        return f"Feedback from {self.patientName} ({self.email})"    
     
 
 

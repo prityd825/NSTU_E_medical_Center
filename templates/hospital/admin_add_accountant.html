@@ -1,97 +1,39 @@
 {% extends 'hospital/admin_base.html' %}
-{% load widget_tweaks %}
+{% block title %}Add accountant · NSTU E-Medical{% endblock %}
+{% block page_title %}Accountants{% endblock %}
 {% block content %}
-
-<head>
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    .note {
-      text-align: center;
-      height: 80px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-      color: #fff;
-      font-weight: bold;
-      line-height: 80px;
-    }
-
-    .form-content {
-      padding: 5%;
-      border: 1px solid #ced4da;
-      margin-bottom: 2%;
-    }
-
-    .form-control {
-      border-radius: 1.5rem;
-    }
-
-    .btnSubmit {
-      border: none;
-      border-radius: 1.5rem;
-      padding: 1%;
-      width: 20%;
-      cursor: pointer;
-      background: #0062cc;
-      color: #fff;
-    }
-
-    .menu {
-      top: 50px;
-    }
-  </style>
-
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-</head>
-<br><br><br>
-
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <div class="container register-form">
-    <div class="form">
-      <div class="note">
-        <p>Add New Accountant To Hospital</p>
-      </div>
-      <div class="form-content">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
-            </div>
-            <div class="form-group">
-              {% render_field userForm.username class="form-control" placeholder="Username" %}
-            </div>
-            <div class="form-group">
-              {% render_field accountantForm.address class="form-control" placeholder="Address" %}
-            </div>
-
-            <div class="form-group">
-                {% render_field accountantForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
-              </div>
-
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
-            </div>
-            <div class="form-group">
-              {% render_field userForm.password class="form-control" placeholder="Password" %}
-            </div>
-            <div class="form-group">
-              {% render_field accountantForm.email class="form-control"  placeholder="email" %}
-            </div>
-            
-          </div>
-        </div>
-        <button type="submit" class="btnSubmit">Register</button>
-      </div>
-    </div>
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/admin-accountant">Accountants</a></li><li class="breadcrumb-item active" aria-current="page">Add accountant</li></ol></nav>
+    <h1>Add an accountant</h1>
+    <p>The account is approved right away. Share the username and password with the accountant.</p>
   </div>
+</div>
 
-</form>
-
+<div class="card" style="max-width:860px">
+  <div class="card-body p-4">
+    {% include 'hospital/partials/form_errors.html' with form=userForm %}
+    {% include 'hospital/partials/form_errors.html' with form=accountantForm %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <div class="form-section-title mt-0">Personal details</div>
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=userForm.first_name wrap="col-md-6 mb-3" placeholder="First name" %}
+        {% include 'hospital/partials/field.html' with field=userForm.last_name wrap="col-md-6 mb-3" placeholder="Last name" %}
+        {% include 'hospital/partials/field.html' with field=userForm.email wrap="col-md-6 mb-3" label="Email" placeholder="accountant@example.com" %}
+        {% include 'hospital/partials/field.html' with field=accountantForm.address wrap="col-md-6 mb-3" placeholder="Address" %}
+      </div>
+      <div class="form-section-title">Login details</div>
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=userForm.username wrap="col-md-6 mb-3" placeholder="Username" %}
+        {% include 'hospital/partials/field.html' with field=userForm.password wrap="col-md-6 mb-3" placeholder="Temporary password" %}
+        {% include 'hospital/partials/field.html' with field=accountantForm.profile_pic wrap="col-12 mb-3" label="Profile photo" %}
+      </div>
+      <div class="form-actions">
+        <a href="/admin-view-accountant" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-check2"></i> Add accountant</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}

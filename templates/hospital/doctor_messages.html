@@ -1,29 +1,49 @@
-<h1>Patients Who Messaged You</h1>
 {% extends 'hospital/doctor_base.html' %}
+{% block title %}Messages for you · NSTU E-Medical{% endblock %}
+{% block page_title %}Messages{% endblock %}
 {% block content %}
-{%load static%}
-
-<div>
-    <h2>Messages for You:</h2>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Sender</th>
-                <th>Message Content</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for message in messages %}
-                <tr>
-                    <td>{{ message.sender }}</td>
-                    <td>{{ message.content }}</td>
-                    <td>{{ message.timestamp }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="page-header">
+  <div>
+    <h1>Messages for you</h1>
+    <p>Every message patients have sent you, newest first.</p>
+  </div>
+  <a href="{% url 'message_list' %}" class="btn btn-primary btn-icon"><i class="bi bi-chat-dots"></i> Open chat</a>
 </div>
 
+<div class="card table-card">
+  {% if messages %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:320px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search by sender or text" data-table-filter="#doctorMessageTable" aria-label="Search messages">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="doctorMessageTable">
+      <thead><tr><th>From</th><th>Message</th><th>Received</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+      {% for message in messages %}
+        <tr>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with name=message.sender.get_full_name|default:message.sender.username cls='avatar-sm' %}
+              <div><div class="name">{{ message.sender.get_full_name|default:message.sender.username }}</div><div class="sub">@{{ message.sender.username }}</div></div>
+            </div>
+          </td>
+          <td class="text-wrap" style="min-width:220px">{{ message.content|truncatechars:120 }}</td>
+          <td class="text-nowrap">{{ message.timestamp|date:"d M Y, H:i" }}</td>
+          <td>
+            <div class="cell-actions">
+              <a class="btn btn-sm btn-soft btn-icon" href="{% url 'message_list' message.chat_id message.sender_id %}"><i class="bi bi-reply"></i> Reply</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-inbox" title="No messages yet" text="Messages from patients will appear here." %}
+  {% endif %}
+</div>
 {% endblock content %}

@@ -1,26 +1,50 @@
-
 {% extends 'hospital/doctor_base.html' %}
-{% load crispy_forms_tags %}
-
-
+{% block title %}Prescription history · NSTU E-Medical{% endblock %}
+{% block page_title %}Prescription history{% endblock %}
 {% block content %}
-<head>
-    <style>
-        .navbar{
-            margin-left: 240px;
-          }
-    </style>
-</head>
-<div style="margin: 100px;">
-    <h4>Prescription list:</h4>
-    <ul>
-        {% for prescription in prescriptions %}
-            <li>
-                 <a style="color: blue;" href="{% url 'generate_pdf' prescription.id %}" target="_blank"><span> {{ prescription.patient }} - {{prescription.date}}</span></a>
-            </li>
-        {% endfor %}
-    </ul>
-    
+<div class="page-header">
+  <div>
+    <h1>Prescription history</h1>
+    <p>Every prescription you have written. Open the PDF to print it or share it with the patient.</p>
+  </div>
+  <a href="/prescribe" class="btn btn-primary btn-icon"><i class="bi bi-plus-lg"></i> New prescription</a>
 </div>
-<br><br><br><br><br>
+
+<div class="card table-card">
+  {% if prescriptions %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:320px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search by patient or symptoms" data-table-filter="#prescriptionTable" aria-label="Search prescriptions">
+    </div>
+    <span class="text-muted small">{{ prescriptions|length }} prescription{{ prescriptions|length|pluralize }}</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="prescriptionTable">
+      <thead><tr><th>Patient</th><th>Symptoms</th><th>Date</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+      {% for prescription in prescriptions %}
+        <tr>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=prescription.patient.profile_pic name=prescription.patient.get_name cls='avatar-sm' %}
+              <div><div class="name">{{ prescription.patient.get_name }}</div><div class="sub">{{ prescription.patient.email|default:"No email" }}</div></div>
+            </div>
+          </td>
+          <td class="text-wrap" style="min-width:200px">{{ prescription.symptoms|default:"Not filled in"|truncatechars:80 }}</td>
+          <td class="text-nowrap">{{ prescription.date|date:"d M Y" }}</td>
+          <td>
+            <div class="cell-actions">
+              <a class="btn btn-sm btn-soft btn-icon" href="{% url 'generate_pdf' prescription.id %}" target="_blank" rel="noopener"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-file-earmark-medical" title="No prescriptions yet" text="Prescriptions you write will be listed here." href="/prescribe" cta="Write a prescription" %}
+  {% endif %}
+</div>
 {% endblock content %}

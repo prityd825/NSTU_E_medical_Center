@@ -1,68 +1,31 @@
 {% extends 'hospital/accountant_base.html' %}
-{% load widget_tweaks %}
+{% block title %}Add medicine · NSTU E-Medical{% endblock %}
+{% block page_title %}Medicine stock{% endblock %}
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <title>Add Medicine Record</title>
-    <style>
-        /* Style the container */
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/accountant-medicine">Medicine stock</a></li><li class="breadcrumb-item active" aria-current="page">Add medicine</li></ol></nav>
+    <h1>Add medicine</h1>
+    <p>Record a new delivery: when it arrived, what it is, who made it and how many units you received.</p>
+  </div>
+</div>
 
-        h2 {
-            text-align: center;
-        }
-
-        /* Style form elements */
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        button[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Add Medicine</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
-    </div>
-</body>
-</html>
-
+<div class="card" style="max-width:720px">
+  <div class="card-body p-4">
+    {% include 'hospital/partials/form_errors.html' with form=form %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=form.medicinename label="Medicine name" placeholder="e.g. Paracetamol 500mg" wrap="col-md-6 mb-3" %}
+        {% include 'hospital/partials/field.html' with field=form.companyname label="Company" placeholder="e.g. Square Pharmaceuticals" wrap="col-md-6 mb-3" %}
+        {% include 'hospital/partials/field.html' with field=form.date label="Date received" wrap="col-md-6 mb-3" %}
+        {% include 'hospital/partials/field.html' with field=form.stock label="Stock (units)" placeholder="e.g. 100" wrap="col-md-6 mb-3" %}
+      </div>
+      <div class="form-actions">
+        <a href="/accountant-view-medicine" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-check2"></i> Save medicine</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}

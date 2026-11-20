@@ -1,90 +1,35 @@
 {% extends 'hospital/patient_base.html' %}
-{% load widget_tweaks %}
+{% block title %}Book appointment · NSTU E-Medical{% endblock %}
+{% block page_title %}Appointments{% endblock %}
 {% block content %}
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/patient-appointment">Appointments</a></li><li class="breadcrumb-item active" aria-current="page">Book</li></ol></nav>
+    <h1>Book an appointment</h1>
+    <p>Pick a doctor and tell us briefly what is wrong.</p>
+  </div>
+</div>
 
-<head>
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    .note {
-      text-align: center;
-      height: 80px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-      color: #fff;
-      font-weight: bold;
-      line-height: 80px;
-    }
-
-    .form-content {
-      padding: 5%;
-      border: 1px solid #ced4da;
-      margin-bottom: 2%;
-    }
-
-    .form-control {
-      border-radius: 1.5rem;
-    }
-
-    .btnSubmit {
-      border: none;
-      border-radius: 1.5rem;
-      padding: 1%;
-      width: 20%;
-      cursor: pointer;
-      background: #0062cc;
-      color: #fff;
-    }
-
-    .menu {
-      top: 50px;
-    }
-  </style>
-
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<br><br>
 {% if message %}
-<script>
-  var a = "{{message}}";
-  alert(a);
-</script>
-
+<div class="alert alert-info d-flex align-items-center gap-2" role="alert"><i class="bi bi-info-circle-fill"></i><div>{{ message }}</div></div>
 {% endif %}
 
-
-<form method="post">
-  {% csrf_token %}
-  <div class="container register-form">
-    <div class="form">
-      <div class="note">
-        <p>Book Appointment Details</p>
-      </div>
-      <div class="form-content">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              {% render_field appointmentForm.description class="form-control" placeholder="Description" %}
-            </div>
-            <div class="form-group">
-              {% render_field appointmentForm.doctorId class="form-control" placeholder="doctor" %}
-            </div>
-            
-
-
-
-          </div>
-
-        </div>
-        <button type="submit" class="btnSubmit">Book</button>
-      </div>
+<div class="card" style="max-width:720px">
+  <div class="card-body p-4">
+    <div class="alert alert-warning d-flex gap-2 align-items-start" role="note">
+      <i class="bi bi-hourglass-split mt-1"></i>
+      <div>Your request goes to the medical center admin first. It shows as <strong>Pending</strong> until they approve it. You can follow it under <a href="/patient-view-appointment">My appointments</a>.</div>
     </div>
+    {% include 'hospital/partials/form_errors.html' with form=appointmentForm %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include 'hospital/partials/field.html' with field=appointmentForm.doctorId label="Doctor" %}
+      {% include 'hospital/partials/field.html' with field=appointmentForm.description label="What is the problem?" placeholder="e.g. Fever and headache for two days" rows="4" %}
+      <div class="form-actions">
+        <a href="/patient-appointment" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-send"></i> Request appointment</button>
+      </div>
+    </form>
   </div>
-</form>
-
-
-
+</div>
 {% endblock content %}

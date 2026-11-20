@@ -1,114 +1,37 @@
 {% extends 'hospital/patient_base.html' %}
-{% load widget_tweaks %}
+{% block title %}Give feedback · NSTU E-Medical{% endblock %}
+{% block page_title %}Feedback{% endblock %}
 {% block content %}
+<div class="page-header">
+  <div>
+    <h1>Give feedback</h1>
+    <p>Loved your visit or think something could be better? We read every message.</p>
+  </div>
+</div>
 
-<head>
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
+{% if message %}
+<div class="alert alert-info d-flex align-items-center gap-2" role="alert"><i class="bi bi-info-circle-fill"></i><div>{{ message }}</div></div>
+{% endif %}
 
-    .note {
-      text-align: center;
-      height: 80px;
-      margin-top: -40px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-      color: #fff;
-      font-weight: bold;
-      line-height: 80px;
-    }
-
-    .form-content {
-      padding: 5%;
-      border: 1px solid #ced4da;
-      margin-bottom: 2%;
-    }
-
-    .form-control {
-      border-radius: 1.5rem;
-    }
-
-    .btnSubmit {
-      border: none;
-      border-radius: 1.5rem;
-      padding: 1%;
-      width: 20%;
-      cursor: pointer;
-      background: #0062cc;
-      color: #fff;
-    }
-
-    /* Style the form container */
-    .form-content {
-      width: 80%; /* Adjust the width as needed */
-      max-width: 400px; /* Adjust the max-width as needed */
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      background-color: aliceblue;
-    }
-
-    /* Style form fields */
-    .form-content input[type="text"],
-    .form-content input[type="email"],
-    .form-content input[type="textarea"],
-    .form-content select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-      background-color:gainsboro;
-    }
-    
-    /* Style the submit button */
-    .form-content .btnSubmit {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    /* Hover effect for the submit button */
-    .form-content .btnSubmit:hover {
-      background-color: #0056b3;
-    }
-    .navbar{
-      margin-left: 240px;
-    }
-  </style>
-
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-
-<body>
-  <br><br>
-  {% if message %}
-  <script>
-    var a = "{{message}}";
-    alert(a);
-  </script>
-  {% endif %}
-
-  <form method="post" class="container register-form">
-    {% csrf_token %}
-    <div class="form">
-      <div class="note">
-        <p>Send Feedback</p>
-      </div>
-      <div class="form-content">
-        {{ model_form.as_p }}
-        <button type="submit" class="btnSubmit">Submit</button>
-      </div>
+<div class="card" style="max-width:720px">
+  <div class="card-body p-4">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div class="stat-icon tone-warning"><i class="bi bi-star-fill"></i></div>
+      <div class="text-muted">Tell us about the doctors, the staff, waiting times or this website. Your feedback helps us improve care for everyone at NSTU.</div>
     </div>
-  </form>
-</body>
-
+    {% include 'hospital/partials/form_errors.html' with form=model_form %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=model_form.patientName label="Name" placeholder="Your name" wrap="col-md-6 mb-3" %}
+        {% include 'hospital/partials/field.html' with field=model_form.email label="Email" placeholder="you@example.com" wrap="col-md-6 mb-3" %}
+        {% include 'hospital/partials/field.html' with field=model_form.feedback label="Your feedback" placeholder="What went well, and what could be better?" rows="5" wrap="col-12 mb-3" %}
+      </div>
+      <div class="form-actions">
+        <a href="/patient-dashboard" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-send"></i> Send feedback</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}

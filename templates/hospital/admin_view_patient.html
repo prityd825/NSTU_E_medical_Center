@@ -1,57 +1,51 @@
 {% extends 'hospital/admin_base.html' %}
+{% block title %}All patients · NSTU E-Medical{% endblock %}
+{% block page_title %}Patients{% endblock %}
 {% block content %}
-{%load static%}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-  </style>
-</head>
-
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Patient</h6>
-    </div>
-    <table class="table table-hover" id="dev-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Profile Picture</th>
-          <th>Symptoms</th>
-          <th>email</th>
-          <th>Address</th>
-          <th>Update</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      {% for p in patients %}
-      <tr>
-        <td> {{p.get_name}}</td>
-        <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{p.symptoms}}</td>
-        <td>{{p.email}}</td>
-        <td>{{p.address}}</td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'update-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
-      </tr>
-      {% endfor %}
-    </table>
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/admin-patient">Patients</a></li><li class="breadcrumb-item active" aria-current="page">All patients</li></ol></nav>
+    <h1>All patients</h1>
+    <p>{{ patients|length }} active patient{{ patients|length|pluralize }}.</p>
   </div>
+  <a href="/admin-add-patient" class="btn btn-primary btn-icon"><i class="bi bi-person-plus"></i> Add patient</a>
 </div>
 
+<div class="card table-card">
+  {% if patients %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:320px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search by name, email or address" data-table-filter="#patientTable" aria-label="Search patients">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="patientTable">
+      <thead><tr><th>Patient</th><th>Address</th><th>Registered</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+      {% for x in patients %}
+        <tr>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=x.profile_pic name=x.get_name %}
+              <div><div class="name">{{ x.get_name }}</div><div class="sub">{{ x.email|default:x.user.email|default:"No email" }}</div></div>
+            </div>
+          </td>
+          <td>{{ x.address }}</td>
+          <td class="text-nowrap">{{ x.admitDate|date:"d M Y" }}</td>
+          <td>
+            <div class="cell-actions">
+              <a class="btn btn-sm btn-soft btn-icon" href="{% url 'update-patient' x.id %}"><i class="bi bi-pencil"></i> Edit</a>
+              <a data-method="post" class="btn btn-sm btn-soft-danger btn-icon" href="{% url 'delete-patient-from-hospital' x.id %}" data-confirm="Remove {{ x.get_name }} from the medical center? This deletes their account."><i class="bi bi-trash"></i> Remove</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-people" title="No active patients" text="Add a patient or approve one who has registered." href="/admin-add-patient" cta="Add patient" %}
+  {% endif %}
+</div>
 {% endblock content %}

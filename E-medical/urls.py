@@ -1,3 +1,4 @@
+import os
 from django.contrib import admin
 from django.urls import path
 from hospital import views
@@ -38,7 +39,7 @@ urlpatterns = [
 
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
-    path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
+    path('logout', views.logout_view, name='logout'),
 
 
     path('admin-dashboard', views.admin_dashboard_view,name='admin-dashboard'),
@@ -68,6 +69,8 @@ urlpatterns = [
      
     path('admin-medicine', views.admin_medicine_view,name='admin-medicine'),
     path('admin-feedback', views.admin_feedback_view,name='admin-feedback'),
+    path('admin-prescriptions', views.admin_prescriptions_view,name='admin-prescriptions'),
+    path('admin-blog', views.admin_blog_view,name='admin-blog'),
     
 
     path('admin-patient', views.admin_patient_view,name='admin-patient'),
@@ -131,7 +134,6 @@ urlpatterns +=[
 #Blog_post code
 urlpatterns += [
     path('doctor-blog/', PostListView.as_view(), name='doctor-blog'),
-    path('blog/', PostListView.as_view(), name='blog-home'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('new-blog/', PostCreateView.as_view(), name='post-create'),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
@@ -179,4 +181,13 @@ urlpatterns += [
         path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
         path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
         path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+]
+
+# Profile pictures are uploaded at runtime into static/profile_pic/. WhiteNoise only serves files that
+# existed at deploy time, so newly uploaded pictures are served by Django here.
+from django.conf import settings
+from django.urls import re_path
+from django.views.static import serve
+urlpatterns += [
+    re_path(r'^static/profile_pic/(?P<path>.*)$', serve, {'document_root': os.path.join(settings.MEDIA_ROOT, 'profile_pic')}),
 ]

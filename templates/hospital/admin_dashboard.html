@@ -1,107 +1,148 @@
 {% extends 'hospital/admin_base.html' %}
-{% load static %}
+{% block title %}Dashboard · NSTU E-Medical{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 {% block content %}
-{%include 'hospital/admin_dashboard_cards.html'%}
-<br><br><br><br>
-<div class="container">
-  <div class="row">
-    <div class="panel panel-primary col-md-12" style="margin-left:2%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Recent Doctors</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Department</th>
-            <th>email</th>
-            <th>Status</th>
 
-          </tr>
-        </thead>
-        {% for d in doctors %}
-        <tr>
-          <td> {{d.get_name}}</td>
-          <td>{{d.department}}</td>
-          <td>{{d.email}}</td>
-          {%if d.status%}
-          <td> <span class="label label-primary">Permanent</span></td>
-          {% else %}
-          <td> <span class="label label-success">On Hold</span></td>
-          {% endif %}
-
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-
-    <div class="panel panel-primary col-md-12" style="margin-left:2%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Recent Patient</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Symptoms</th>
-            <th>email</th>
-            <th>Address</th>
-            <th>Status</th>
-
-          </tr>
-        </thead>
-        {% for p in patients %}
-        <tr>
-          <td> {{p.get_name}}</td>
-          <td>{{p.symptoms}}</td>
-          <td>{{p.email}}</td>
-          <td>{{p.address}}</td>
-          {%if p.status%}
-          <td> <span class="label label-primary">Admitted</span></td>
-          {% else %}
-          <td> <span class="label label-success">On Hold</span></td>
-          {% endif %}
-
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-
-
-    <div class="panel panel-primary col-md-12" style="margin-left:2%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Recent Accountant</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>email</th>
-            <th>Address</th>
-            <th>Status</th>
-
-          </tr>
-        </thead>
-        {% for a in accountants %}
-        <tr>
-          <td> {{a.get_name}}</td>
-          <td>{{a.email}}</td>
-          <td>{{a.address}}</td>
-          {%if a.status%}
-          <td> <span class="label label-primary">Permanent</span></td>
-          {% else %}
-          <td> <span class="label label-success">On Hold</span></td>
-          {% endif %}
-
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-
-
-
-
+<div class="page-header">
+  <div>
+    <h1>Good to see you, {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>Here is what is happening at the medical center today.</p>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a href="/admin-add-appointment" class="btn btn-soft btn-icon"><i class="bi bi-calendar-plus"></i> New appointment</a>
+    <a href="/admin-add-patient" class="btn btn-primary btn-icon"><i class="bi bi-person-plus"></i> Add patient</a>
   </div>
 </div>
 
+{% if pendingdoctorcount or pendingpatientcount or pendingaccountantcount or pendingappointmentcount %}
+<div class="alert alert-warning d-flex flex-wrap align-items-center gap-2 mb-4" role="alert">
+  <i class="bi bi-hourglass-split"></i>
+  <strong>Waiting for your approval:</strong>
+  {% if pendingdoctorcount %}<a class="badge badge-soft-warning" href="/admin-approve-doctor">{{ pendingdoctorcount }} doctor{{ pendingdoctorcount|pluralize }}</a>{% endif %}
+  {% if pendingpatientcount %}<a class="badge badge-soft-warning" href="/admin-approve-patient">{{ pendingpatientcount }} patient{{ pendingpatientcount|pluralize }}</a>{% endif %}
+  {% if pendingaccountantcount %}<a class="badge badge-soft-warning" href="/admin-approve-accountant">{{ pendingaccountantcount }} accountant{{ pendingaccountantcount|pluralize }}</a>{% endif %}
+  {% if pendingappointmentcount %}<a class="badge badge-soft-warning" href="/admin-approve-appointment">{{ pendingappointmentcount }} appointment{{ pendingappointmentcount|pluralize }}</a>{% endif %}
+</div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=doctorcount label="Active doctors" icon="bi-person-badge" tone="accent" href="/admin-view-doctor" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=patientcount label="Registered patients" icon="bi-people" tone="primary" href="/admin-view-patient" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=accountantcount label="Accountants" icon="bi-person-vcard" tone="violet" href="/admin-view-accountant" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=appointmentcount label="Confirmed appointments" icon="bi-calendar2-check" tone="success" href="/admin-view-appointment" %}
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=prescriptioncount label="Prescriptions written" icon="bi-file-earmark-medical" tone="primary" href="/admin-prescriptions" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% if lowstockcount %}{% include 'hospital/partials/stat_card.html' with value=medicinecount label="Medicines in stock" icon="bi-capsule" tone="warning" note=lowstockcount|stringformat:"d"|add:" running low" note_tone="warning" href="/admin-medicine" %}{% else %}{% include 'hospital/partials/stat_card.html' with value=medicinecount label="Medicines in stock" icon="bi-capsule" tone="accent" href="/admin-medicine" %}{% endif %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=feedbackcount label="Feedback received" icon="bi-chat-square-heart" tone="violet" href="/admin-feedback" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=postcount label="Blog posts" icon="bi-journal-text" tone="success" href="/admin-blog" %}
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-xl-7">
+    <div class="card table-card h-100">
+      <div class="card-header">
+        <h2 class="card-title">Recent doctors</h2>
+        <a href="/admin-view-doctor" class="btn btn-sm btn-soft">View all</a>
+      </div>
+      {% if doctors %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead><tr><th>Doctor</th><th>Specialisation</th><th>Status</th></tr></thead>
+          <tbody>
+          {% for d in doctors|slice:":6" %}
+            <tr>
+              <td>
+                <div class="cell-person">
+                  {% include 'hospital/partials/avatar.html' with pic=d.profile_pic name=d.get_name cls='avatar-sm' %}
+                  <div><div class="name">{{ d.get_name }}</div><div class="sub">{{ d.email|default:"No email" }}</div></div>
+                </div>
+              </td>
+              <td>{{ d.department }}</td>
+              <td>{% if d.status %}<span class="badge badge-soft-success">Active</span>{% else %}<span class="badge badge-soft-warning">Pending</span>{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        {% include 'hospital/partials/empty_state.html' with icon="bi-person-badge" title="No doctors yet" text="Add the first doctor to get started." href="/admin-add-doctor" cta="Add doctor" %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-xl-5">
+    <div class="card table-card h-100">
+      <div class="card-header">
+        <h2 class="card-title">Recent patients</h2>
+        <a href="/admin-view-patient" class="btn btn-sm btn-soft">View all</a>
+      </div>
+      {% if patients %}
+      <ul class="list-group list-group-flush">
+        {% for p in patients|slice:":6" %}
+        <li class="list-group-item d-flex align-items-center gap-3 px-3 py-3">
+          {% include 'hospital/partials/avatar.html' with pic=p.profile_pic name=p.get_name cls='avatar-sm' %}
+          <div class="min-w-0 flex-grow-1">
+            <div class="fw-semibold text-truncate">{{ p.get_name }}</div>
+            <div class="small text-muted text-truncate">{{ p.address|default:p.email }}</div>
+          </div>
+          {% if p.status %}<span class="badge badge-soft-success">Approved</span>{% else %}<a href="/admin-approve-patient" class="badge badge-soft-warning">Review</a>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        {% include 'hospital/partials/empty_state.html' with icon="bi-people" title="No patients yet" text="Patients appear here after they register." %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card table-card">
+      <div class="card-header">
+        <h2 class="card-title">Accountants</h2>
+        <a href="/admin-view-accountant" class="btn btn-sm btn-soft">View all</a>
+      </div>
+      {% if accountants %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead><tr><th>Accountant</th><th>Address</th><th>Status</th></tr></thead>
+          <tbody>
+          {% for a in accountants|slice:":5" %}
+            <tr>
+              <td>
+                <div class="cell-person">
+                  {% include 'hospital/partials/avatar.html' with pic=a.profile_pic name=a.get_name cls='avatar-sm' %}
+                  <div><div class="name">{{ a.get_name }}</div><div class="sub">{{ a.email|default:"No email" }}</div></div>
+                </div>
+              </td>
+              <td>{{ a.address }}</td>
+              <td>{% if a.status %}<span class="badge badge-soft-success">Active</span>{% else %}<span class="badge badge-soft-warning">Pending</span>{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        {% include 'hospital/partials/empty_state.html' with icon="bi-person-vcard" title="No accountants yet" href="/admin-add-accountant" cta="Add accountant" %}
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock content %}

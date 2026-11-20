@@ -1,84 +1,74 @@
 {% extends 'hospital/accountant_base.html' %}
-{% load static %}
+{% block title %}Dashboard · NSTU E-Medical{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 {% block content %}
-<style>
-    .container {
-        margin-top: 0px;
-    }
-
-    .panel-primary {
-        background-color: #f8f8f8;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .table {
-        background-color: #fff;
-        margin: 0 auto;
-    }
-
-    .table thead th {
-        background-color: #337ab7;
-        color: #fff;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f5f5f5;
-    }
-
-    .table td {
-        vertical-align: middle;
-    }
-
-    body {
-        padding: 20px;
-    }
-</style>
-
-<br><br><br><br>
-<div class="container">
-    <div class="row">
-        <div class="panel panel-primary" style="margin-left:15%;">
-            <div class="panel-heading" style="text-align:center;">
-                <h5>All Medicine Records</h5>
-                <br>
-
-                {% comment %} <form method="GET" action="{% url 'search-medicine-records' %}">
-                    <div class="form-group">
-                        <label for="start_date">Start Date:</label>
-                        <input type="date" name="start_date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="end_date">End Date:</label>
-                        <input type="date" name="end_date" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form> {% endcomment %}
-                <br>
-
-                <table class="table table-hover" id="dev-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Medicine Name</th>
-                            <th>Company Name</th>
-                            <th>Stock</th>
-                        </tr>
-                    </thead>
-                    {% for m in medicines %}
-                    <tr>
-                        <td>{{ m.date }}</td>
-                        <td>{{ m.medicinename }}</td>
-                        <td>{{ m.companyname }}</td>
-                        <td>{{ m.stock }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="page-header">
+  <div>
+    <h1>Good to see you, {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>An overview of the medicine stock at the medical center.</p>
+  </div>
+  <a href="/accountant-add-medicine" class="btn btn-primary btn-icon"><i class="bi bi-plus-lg"></i> Add medicine</a>
 </div>
 
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-4">
+    {% include 'hospital/partials/stat_card.html' with value=medicines|length label="Medicines on record" icon="bi-capsule" tone="primary" href="/accountant-view-medicine" %}
+  </div>
+  {% if total_stock is not None %}
+  <div class="col-sm-6 col-xl-4">
+    {% include 'hospital/partials/stat_card.html' with value=total_stock label="Total units in stock" icon="bi-box-seam" tone="accent" %}
+  </div>
+  {% endif %}
+  {% if low_stock_count is not None %}
+  <div class="col-sm-6 col-xl-4">
+    {% include 'hospital/partials/stat_card.html' with value=low_stock_count label="Low stock (under 20 units)" icon="bi-exclamation-triangle" tone="warning" href="/accountant-view-medicine" %}
+  </div>
+  {% endif %}
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="card-title mb-1">Find records by date</h2>
+    <p class="text-muted small mb-3">See every medicine received between two dates.</p>
+    <form method="get" action="{% url 'search-medicine-records' %}" class="row g-3 align-items-end">
+      <div class="col-sm-6 col-lg-4">
+        <label class="form-label" for="start_date">From <span class="text-danger">*</span></label>
+        <input type="date" class="form-control" name="start_date" id="start_date" required>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <label class="form-label" for="end_date">To <span class="text-danger">*</span></label>
+        <input type="date" class="form-control" name="end_date" id="end_date" required>
+      </div>
+      <div class="col-lg-4">
+        <button type="submit" class="btn btn-primary btn-icon w-100"><i class="bi bi-search"></i> Search records</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card table-card">
+  <div class="card-header">
+    <h2 class="card-title">All medicine records</h2>
+    <a href="/accountant-view-medicine" class="btn btn-sm btn-soft">Manage</a>
+  </div>
+  {% if medicines %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Date received</th><th>Medicine</th><th>Company</th><th>Stock (units)</th></tr></thead>
+      <tbody>
+      {% for m in medicines %}
+        <tr>
+          <td class="text-nowrap">{{ m.date|date:"d M Y" }}</td>
+          <td class="fw-semibold">{{ m.medicinename }}</td>
+          <td>{{ m.companyname }}</td>
+          <td class="text-nowrap">{{ m.stock }}{% if m.stock < 20 %} <span class="badge badge-soft-danger ms-1">Low stock</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-capsule" title="No medicines yet" text="Add the first medicine to start tracking stock." href="/accountant-add-medicine" cta="Add medicine" %}
+  {% endif %}
+</div>
 {% endblock content %}

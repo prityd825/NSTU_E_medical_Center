@@ -1,19 +1,5 @@
 {% extends 'hospital/homebase.html' %}
-
+{% block title %}Administrator · NSTU E-Medical{% endblock %}
 {% block content %}
-
-<br>
-<br>
-
-<div class="jumbotron" style="margin-bottom:0px;">
-  <h1 class="display-4" style="text-align:center;">Hello, Admin</h1>
-  <p class="lead">Welcome to E-medical Service.</p>
-  <hr class="my-4">
-  <p>You can access various features after Login/SignUp.</p>
-  <p class="lead">
-    {% comment %} <a class="btn btn-primary btn-lg" href="/adminsignup" role="button">SignUp</a> {% endcomment %}
-    <a class="btn btn-primary btn-lg" href="/adminlogin" role="button">Login</a>
-  </p>
-</div>
-
+{% include 'hospital/partials/role_landing.html' with role="Admin" icon="bi-shield-lock" tone="warning" login_url="/adminlogin" text="Sign in to approve accounts and manage doctors, patients, appointments and medicine." %}
 {% endblock content %}

@@ -1,0 +1,15 @@
+{% comment %}
+  Django flash messages. Some chat views pass their own `messages` variable (chat Message objects),
+  so only items with a `level` (real django.contrib.messages) are shown.
+{% endcomment %}
+{% if messages %}
+<div class="flash-messages">
+  {% for message in messages %}{% if message.level %}
+  <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+    <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-exclamation-octagon-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+    <div>{{ message }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}{% endfor %}
+</div>
+{% endif %}

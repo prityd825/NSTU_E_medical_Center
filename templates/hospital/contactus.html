@@ -1,35 +1,37 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en" dir="ltr">
-
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <title>E-medical</title>
-
-
-</head>
-
-<body>
-
-  {% include "hospital/navbar.html" %}
-  <br><br>
-
-  <center>
-    <h3 class='alert alert-success'>Send Us Your Valuable Feedback !</h3>
-
-    <form method="POST">
-      {% csrf_token %}
-      <div class="form-group">
-        <p>
-        <h3>{{ form.as_p }}</h3>
-        </p>
-        <br>
-        <input type="submit" value="Send Message" class='btn btn-primary btn-lg'>
+{% extends 'hospital/homebase.html' %}
+{% block title %}Contact · NSTU E-Medical{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="row g-4 g-lg-5">
+      <div class="col-lg-5">
+        <div class="section-eyebrow">Contact us</div>
+        <h1 class="section-title">We're here to help</h1>
+        <p class="section-lead mb-4">Have a question or suggestion about the medical center? Send us a message and we'll get back to you by email.</p>
+        <div class="d-grid gap-3">
+          <div class="feature"><div class="stat-icon tone-primary"><i class="bi bi-geo-alt"></i></div><div><h4>Visit</h4><p>Administration Building, Ground Floor, Room 117, NSTU</p></div></div>
+          <div class="feature"><div class="stat-icon tone-accent"><i class="bi bi-clock"></i></div><div><h4>Opening hours</h4><p>8:30 AM to 5:00 PM on working days</p></div></div>
+          <div class="feature"><div class="stat-icon tone-danger"><i class="bi bi-truck-front"></i></div><div><h4>Emergency</h4><p>Emergency care and ambulance available 24 hours. For an emergency, come to the center directly.</p></div></div>
+        </div>
       </div>
-    </form>
-  </center>
-  {% include "hospital/footer.html" %}
-</body>
-
-</html>
+      <div class="col-lg-7">
+        <div class="card">
+          <div class="card-body p-4">
+            <h2 class="h5 mb-3">Send a message</h2>
+            {% include 'hospital/partials/form_errors.html' with form=form %}
+            <form method="post" novalidate>
+              {% csrf_token %}
+              <div class="row">
+                {% include 'hospital/partials/field.html' with field=form.Name wrap="col-md-6 mb-3" placeholder="Full name" %}
+                {% include 'hospital/partials/field.html' with field=form.Email wrap="col-md-6 mb-3" placeholder="you@example.com" %}
+                {% include 'hospital/partials/field.html' with field=form.Message wrap="col-12 mb-3" placeholder="How can we help?" rows="5" %}
+              </div>
+              <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-send"></i> Send message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

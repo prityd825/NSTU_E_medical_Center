@@ -1,62 +1,110 @@
-# 🏥 NSTU E-Medical Center
+# NSTU E-Medical Center
 
-![Django](https://img.shields.io/badge/Framework-Django-092E20?style=for-the-badge&logo=django&logoColor=white)
-![Python](https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
+An online home for the medical center at **Noakhali Science and Technology University**.
+Students, teachers and staff can book a visit, chat with a doctor and download their prescriptions,
+while the center keeps track of patients, appointments and medicine stock in one place.
 
-A centralized digital healthcare platform developed to modernize medical services at **Noakhali Science and Technology University (NSTU)**. This application facilitates seamless communication between doctors and patients while maintaining electronic health records (EHR).
+We built it because the paper-and-queue system wasted everyone's time. Now most things can be done from a phone.
 
----
-
-## 🌟 Key Features
-
-### 👨‍⚕️ For Doctors
-- **Digital Prescriptions:** Create online prescriptions and send them to patients as PDF files via email.
-- **Expert Profiles:** Dedicated profiles for doctors to showcase their expertise.
-- **Medical Blogging:** A platform to share health-related articles and first-aid tips.
-
-### 🧑‍⚕️ For Patients
-- **Online Consultation:** Real-time chat system for remote consultations.
-- **Unique Medical ID:** Centralized patient database with unique IDs for easy medical history tracking.
-- **Feedback System:** Rating and comment system to monitor service quality.
-
-### 📊 Administrative & Inventory
-- **Medicine Accountant:** Track inflow/outflow of medicine and maintain usage records.
-- **Electronic Health Records (EHR):** Efficiently manage patient information and medical history.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/prityd825/NSTU_E_medical_Center)
 
 ---
 
-## 🛠️ Tech Stack
+## Try it with a demo account
 
-- **Backend:** Python (Django Framework)
-- **Frontend:** HTML5, CSS3, JavaScript
-- **Database:** SQLite3
-- **Tools:** SMTP for PDF Mailing, Django Templates
+Every demo account uses the same password: **`Demo@1234`**
+
+| Role | Username | Sign in at | What you can try |
+|---|---|---|---|
+| Administrator | `demo_admin` | `/adminlogin` | Approve sign-ups, manage doctors and patients, see every prescription |
+| Doctor | `demo_doctor` | `/doctorlogin` | See appointments, write a prescription, reply to patients, post on the blog |
+| Patient | `demo_patient` | `/patientlogin` | Book an appointment, message a doctor, download a prescription PDF |
+| Accountant | `demo_accountant` | `/accountantlogin` | Add medicine, update stock, search records by date |
+
+Running it yourself? Create these accounts with `python manage.py create_demo_users`.
+Please don't put real medical information into the demo.
 
 ---
 
-## 📐 Project Architecture
+## What it does
 
+**Patients**
+- Book an appointment and follow its status (pending → approved)
+- Chat privately with a doctor
+- Download every prescription as a PDF
+- Leave feedback for the center
 
+**Doctors**
+- See their own appointments and patients
+- Write digital prescriptions. Medicine is taken out of stock automatically, and the form warns when stock runs low.
+- Write health tips and first-aid articles for the public blog
 
-The system follows the **MVT (Model-View-Template)** architecture, ensuring a scalable and maintainable codebase.
+**Accountants**
+- Keep the medicine stock up to date
+- Spot medicines that are running low
+- Search stock records between two dates
+
+**Administrators**
+- Approve or reject new doctors, patients and accountants
+- Manage appointments, people, prescriptions, feedback and blog posts from one dashboard
+
+Each role only sees its own part of the site. A patient who opens a doctor page is sent back to their own dashboard,
+and nobody can read someone else's chat or prescription.
 
 ---
 
-## 📂 Repository Structure
+## Run it on your computer
+
+You need Python 3.12 or newer.
+
+```bash
+git clone https://github.com/prityd825/NSTU_E_medical_Center.git
+cd NSTU_E_medical_Center
+python -m venv .venv
+.venv\Scripts\activate          # on macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py create_demo_users
+python manage.py runserver
+```
+
+Then open http://127.0.0.1:8000 and sign in with one of the demo accounts.
+
+Run the tests with `python manage.py test hospital`.
+
+---
+
+## Deploying
+
+The repo is ready for [Render](https://render.com). Click the **Deploy to Render** button above, or create a
+*Blueprint* from this repo. `render.yaml` and `build.sh` take care of installing packages, collecting static files,
+running migrations and creating the demo accounts.
+
+Settings come from environment variables:
+
+| Variable | What it is |
+|---|---|
+| `SECRET_KEY` | Any long random string (Render generates one for you) |
+| `DEBUG` | `False` on a server |
+| `ALLOWED_HOSTS` | Your domain, e.g. `nstu-emedical.onrender.com` (Render's own domain is added automatically) |
+| `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` | Optional Gmail address and *app password* for the contact form and password reset |
+
+> On Render's free plan the disk is reset on every deploy, so new sign-ups and uploads made on the live site
+> won't survive a redeploy. Fine for a demo; for real use, switch to a hosted database.
+
+---
+
+## Built with
+
+Django · Bootstrap 5 · SQLite · xhtml2pdf (prescription PDFs) · WhiteNoise · Gunicorn
 
 ```text
-├── E-medical/        # Project Settings & Configuration
-├── hospital/         # Application Logic (Views, Models, URLs)
-├── static/           # CSS, JS, and Images
-├── templates/        # HTML Templates
-├── manage.py         # Django Manager
-└── db.sqlite3        # Local Database
-
-# NSTU_E_medical_Center
-The project will provide a digital platform for doctors and patients to access medical services, information, and communication channels online, eliminating the need for manual processes. The web application will include a doctor profile system, allowing doctors to create their profiles and write prescriptions online, which can be sent to patients as PDF files via email. The system will also have a patient information database, allowing the medical center to maintain patient records with unique IDs for easy access to their medical history. The project also aims to provide a patient feedback system, enabling patients to rate and comment on the quality of treatment they received. The medical center can use this system to monitor the quality of its services and make improvements where necessary. 
-
-Moreover, the web application will offer a chat option, providing patients with the ability to receive online consultations from doctors without physically visiting the medical center. The website will also have a blog post option, where doctors can share articles on medical topics like first aid and other health issues. Finally, the web application will feature a medical accountant system, allowing the medical center to track the inflow and outflow of medicine, as well as maintain records of the types of medicine used by patients. Overall, this project aims to digitize the medical center at NSTU and provide a more convenient and efficient way for doctors and patients to access and manage medical services. The project will enable the medical center to provide better patient care, track medicine inflow and outflow, and maintain records of patient information, ultimately improving the quality of medical services provided by the center.
-
+E-medical/     project settings and URLs
+hospital/      models, views, forms, access rules, tests
+templates/     pages (one layout per role)
+static/        stylesheet, images, profile pictures
+```
 
 ---
+
+Made with care for the NSTU community. Found a bug or have an idea? Open an issue.

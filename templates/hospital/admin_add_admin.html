@@ -1,0 +1,30 @@
+{% extends 'hospital/admin_base.html' %}
+{% block title %}Add administrator · NSTU E-Medical{% endblock %}
+{% block page_title %}Settings{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Add an administrator</h1>
+    <p>Administrators can approve accounts and manage everything in the medical center. Only add people you trust.</p>
+  </div>
+</div>
+
+<div class="card" style="max-width:760px">
+  <div class="card-body p-4">
+    {% include 'hospital/partials/form_errors.html' with form=form %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="row">
+        {% include 'hospital/partials/field.html' with field=form.first_name wrap="col-md-6 mb-3" placeholder="First name" %}
+        {% include 'hospital/partials/field.html' with field=form.last_name wrap="col-md-6 mb-3" placeholder="Last name" %}
+        {% include 'hospital/partials/field.html' with field=form.username wrap="col-md-6 mb-3" placeholder="Username" %}
+        {% include 'hospital/partials/field.html' with field=form.password wrap="col-md-6 mb-3" placeholder="Temporary password" %}
+      </div>
+      <div class="form-actions">
+        <a href="/admin-dashboard" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-shield-plus"></i> Create administrator</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

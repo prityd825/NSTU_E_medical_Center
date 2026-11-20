@@ -1,0 +1,81 @@
+{% extends 'hospital/base.html' %}
+{% comment %}
+  Shell for every logged-in page (sidebar + topbar). Role bases (admin_base, doctor_base,
+  patient_base, accountant_base) extend this and fill `role_label`, `sidebar_nav` and `user_menu`.
+  Pages extend a role base and fill `page_title` and `content` (optionally `topbar_actions`).
+{% endcomment %}
+{% block title %}NSTU E-Medical{% endblock %}
+{% block body %}
+<aside class="app-sidebar" id="appSidebar" aria-label="Main navigation">
+  <a class="sidebar-brand" href="/afterlogin">
+    <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+    <span>E-Medical<small>NSTU Medical Center</small></span>
+  </a>
+  <div class="sidebar-profile">
+    {% include 'hospital/partials/avatar.html' with pic=nav_profile.profile_pic name=request.user.get_full_name|default:request.user.username %}
+    <div class="min-w-0">
+      <div class="name text-truncate">{{ request.user.get_full_name|default:request.user.username }}</div>
+      <div class="role">{% block role_label %}{% endblock %}</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    {% block sidebar_nav %}{% endblock %}
+  </nav>
+  <div class="sidebar-footer">
+    <form method="post" action="{% url 'logout' %}" class="m-0">{% csrf_token %}
+      <button type="submit" class="sidebar-link w-100 border-0 bg-transparent text-start"><i class="bi bi-box-arrow-left"></i>Sign out</button>
+    </form>
+  </div>
+</aside>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+
+<div class="app-main">
+  <header class="app-topbar">
+    <button class="sidebar-toggle" type="button" aria-label="Open menu" data-sidebar-toggle><i class="bi bi-list"></i></button>
+    <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+    <div class="topbar-right">
+      {% block topbar_actions %}{% endblock %}
+      <div class="dropdown">
+        <a href="#" class="topbar-user dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          {% include 'hospital/partials/avatar.html' with pic=nav_profile.profile_pic name=request.user.get_full_name|default:request.user.username cls='avatar-sm' %}
+          <span class="name">{{ request.user.first_name|default:request.user.username }}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+          {% block user_menu %}{% endblock %}
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <form method="post" action="{% url 'logout' %}" class="m-0">{% csrf_token %}
+              <button type="submit" class="dropdown-item rounded py-2 text-danger"><i class="bi bi-box-arrow-left me-2"></i>Sign out</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    {% include 'hospital/partials/messages.html' %}
+    {% block content %}{% endblock content %}
+  </main>
+
+  <footer class="app-footer d-flex flex-wrap justify-content-between gap-2">
+    <span>&copy; {% now "Y" %} NSTU E-Medical Center</span>
+    <span>Need help? Visit Room 117, Administration Building</span>
+  </footer>
+</div>
+{% endblock body %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    var body = document.body;
+    document.querySelectorAll('[data-sidebar-toggle]').forEach(function (b) {
+      b.addEventListener('click', function () { body.classList.toggle('sidebar-open'); });
+    });
+    document.querySelectorAll('[data-sidebar-close]').forEach(function (b) {
+      b.addEventListener('click', function () { body.classList.remove('sidebar-open'); });
+    });
+  })();
+</script>
+{% block page_js %}{% endblock %}
+{% endblock extra_js %}

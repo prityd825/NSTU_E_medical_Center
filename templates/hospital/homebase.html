@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8">
-  <title>E-medical</title>
-
-</head>
-
-<body>
-  {% include "hospital/navbar.html" %}
-  {%block content%}
-
-  {%endblock content%}
-  {% include "hospital/footer.html" %}
-</body>
-
-
-</html>
+{% extends 'hospital/base.html' %}
+{% block body %}
+<div class="public-wrap">
+  {% include 'hospital/navbar.html' %}
+  <main class="public-main">
+    {% include 'hospital/partials/messages.html' %}
+    {% block content %}{% endblock content %}
+  </main>
+  {% include 'hospital/footer.html' %}
+</div>
+{% endblock body %}

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: nstu-emedical
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn "E-medical.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.1
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false

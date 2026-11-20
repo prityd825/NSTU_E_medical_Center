@@ -1,0 +1,9 @@
+{% comment %}
+  Usage: {% include 'hospital/partials/empty_state.html' with icon="bi-calendar-x" title="No appointments yet" text="..." href="/x" cta="Book one" %}
+{% endcomment %}
+<div class="empty-state">
+  <div class="empty-icon"><i class="bi {{ icon|default:'bi-inbox' }}"></i></div>
+  <h3>{{ title|default:"Nothing here yet" }}</h3>
+  {% if text %}<p class="mb-3">{{ text }}</p>{% endif %}
+  {% if href %}<a class="btn btn-primary btn-sm" href="{{ href }}">{{ cta|default:"Get started" }}</a>{% endif %}
+</div>

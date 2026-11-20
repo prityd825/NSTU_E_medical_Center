@@ -1,0 +1,4 @@
+{% comment %}
+  Usage: {% include 'hospital/partials/avatar.html' with pic=obj.profile_pic name=obj.get_name cls='avatar-sm' %}
+  Shows the profile picture, or the person's initials when there is none.
+{% endcomment %}{% load static em_tags %}{% if pic %}<img src="{% static pic.url %}" alt="{{ name }}" class="avatar {{ cls }}">{% else %}<span class="avatar {{ cls }}" aria-hidden="true">{{ name|initials }}</span>{% endif %}

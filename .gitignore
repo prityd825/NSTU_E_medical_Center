@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Django
+staticfiles/
+*.log
+
+# Local tooling
+.claude/
+.vscode/
+.idea/
+.env

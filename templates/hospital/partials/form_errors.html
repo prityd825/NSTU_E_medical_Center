@@ -1,0 +1,7 @@
+{% comment %}Usage: {% include 'hospital/partials/form_errors.html' with form=form %} (shows non-field errors){% endcomment %}
+{% if form.non_field_errors %}
+<div class="alert alert-danger d-flex gap-2 align-items-start" role="alert">
+  <i class="bi bi-exclamation-octagon-fill mt-1"></i>
+  <div>{% for e in form.non_field_errors %}<div>{{ e }}</div>{% endfor %}</div>
+</div>
+{% endif %}

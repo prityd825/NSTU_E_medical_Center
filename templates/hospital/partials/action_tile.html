@@ -1,0 +1,12 @@
+{% comment %}
+  Usage: {% include 'hospital/partials/action_tile.html' with href="/admin-view-doctor" icon="bi-people" tone="primary" title="All doctors" text="View, edit or remove doctors." cta="Open list" badge=3 %}
+{% endcomment %}
+<a href="{{ href }}" class="card action-tile">
+  <div class="d-flex justify-content-between align-items-start">
+    <div class="stat-icon tone-{{ tone|default:'primary' }}"><i class="bi {{ icon }}"></i></div>
+    {% if badge %}<span class="badge badge-soft-warning">{{ badge }} pending</span>{% endif %}
+  </div>
+  <h3>{{ title }}</h3>
+  <p>{{ text }}</p>
+  <span class="tile-link">{{ cta|default:"Open" }} <i class="bi bi-arrow-right"></i></span>
+</a>

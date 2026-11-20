@@ -1,0 +1,39 @@
+{% extends 'hospital/admin_base.html' %}
+{% block title %}Health blog · NSTU E-Medical{% endblock %}
+{% block page_title %}Health blog{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Health blog posts</h1>
+    <p>Articles doctors have published on the public blog. Remove anything that should not be online.</p>
+  </div>
+  <a href="/blog/" target="_blank" rel="noopener" class="btn btn-soft btn-icon"><i class="bi bi-box-arrow-up-right"></i> View public blog</a>
+</div>
+
+<div class="card table-card">
+  {% if posts %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Title</th><th>Author</th><th>Published</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+      {% for post in posts %}
+        <tr>
+          <td class="fw-semibold">{{ post.title }}</td>
+          <td>{{ post.author.get_full_name|default:post.author.username }}</td>
+          <td class="text-nowrap">{{ post.date_posted|date:"d M Y" }}</td>
+          <td>
+            <div class="cell-actions">
+              <a class="btn btn-sm btn-soft btn-icon" href="{% url 'post-detail' post.id %}" target="_blank" rel="noopener"><i class="bi bi-eye"></i> Read</a>
+              <a class="btn btn-sm btn-soft-danger btn-icon" href="{% url 'post-delete' post.id %}"><i class="bi bi-trash"></i> Delete</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-journal-text" title="No posts yet" text="Doctors haven't published any articles." %}
+  {% endif %}
+</div>
+{% endblock content %}

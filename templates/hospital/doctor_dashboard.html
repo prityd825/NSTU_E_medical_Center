@@ -1,39 +1,58 @@
 {% extends 'hospital/doctor_base.html' %}
-{% load static %}
+{% block title %}Dashboard · NSTU E-Medical{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 {% block content %}
-{%include 'hospital/doctor_dashboard_cards.html'%}
-<br><br><br><br>
-<div class="container">
-  <div class="row">
-    <div class="panel panel-primary" style="margin-left:15%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Recent Appointments For You</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>Patient Name</th>
-            <th>Picture</th>
-            <th>Description</th>
-            <th>email</th>
-            <th>Address</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        {% for a,p in appointments %}
-        <tr>
-          <td>{{a.patientName}}</td>
-          <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-          <td>{{a.description}}</td>
-          <td>{{p.email}}</td>
-          <td>{{p.address}}</td>
-          <td>{{a.appointmentDate}}</td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
+<div class="page-header">
+  <div>
+    <h1>Good to see you, Dr. {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>Your appointments, prescriptions and messages at a glance.</p>
+  </div>
+  <a href="/prescribe" class="btn btn-primary btn-icon"><i class="bi bi-file-earmark-medical"></i> Write prescription</a>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=appointmentcount label="Appointments for you" icon="bi-calendar2-check" tone="primary" href="/doctor-view-appointment" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/stat_card.html' with value=patientcount label="Registered patients" icon="bi-people" tone="accent" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/action_tile.html' with href="/prescription_history" icon="bi-clock-history" tone="violet" title="Prescription history" text="Open or print prescriptions you wrote." cta="Open" %}
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    {% include 'hospital/partials/action_tile.html' with href="/message_list" icon="bi-chat-dots" tone="success" title="Messages" text="Reply to questions from your patients." cta="Open chat" %}
   </div>
 </div>
 
-
+<div class="card table-card">
+  <div class="card-header">
+    <h2 class="card-title">Recent appointments</h2>
+    <a href="/doctor-view-appointment" class="btn btn-sm btn-soft">View all</a>
+  </div>
+  {% if appointmentcount %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Patient</th><th>Reason for visit</th><th>Address</th><th>Date</th></tr></thead>
+      <tbody>
+      {% for a, p in appointments %}{% if forloop.counter <= 6 %}
+        <tr>
+          <td>
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=p.profile_pic name=a.patientName cls='avatar-sm' %}
+              <div><div class="name">{{ a.patientName }}</div><div class="sub">{{ p.email|default:"No email" }}</div></div>
+            </div>
+          </td>
+          <td class="text-wrap" style="min-width:220px">{{ a.description }}</td>
+          <td>{{ p.address }}</td>
+          <td class="text-nowrap">{{ a.appointmentDate|date:"d M Y" }}</td>
+        </tr>
+      {% endif %}{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-calendar-x" title="No appointments yet" text="Appointments appear here once an administrator confirms them." %}
+  {% endif %}
+</div>
 {% endblock content %}

@@ -1,84 +1,39 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-  <style>
-   
-    footer {
-      padding: 0px 0px 0px 0px;
-      background-color: black;
-      margin: 0px;
-    }
-
-    .fa {
-      padding: 10px;
-      font-size: 23px;
-      width: 60px;
-      text-align: center;
-      text-decoration: none;
-      margin: 5px 2px;
-      border-radius: 50%;
-    }
-
-    .fa:hover {
-      opacity: 0.5;
-      text-decoration: none;
-    }
-
-    .fa-facebook {
-      background: #3B5998;
-      color: white;
-      margin-top: 30px;
-    }
-
-    .fa-whatsapp {
-      background: #25d366;
-      color: white;
-    }
-
-    .fa-twitter {
-      background: #55ACEE;
-      color: white;
-    }
-
-    .fa-instagram {
-      background: #125688;
-      color: white;
-    }
-
-    p {
-      text-align: center;
-
-    }
-  </style>
-</head>
-
-<div style="margin-top: 150px;">
-  <footer>
-    <p>
-      <a href="https://www.facebook.com/NSTUCampus" class="fa fa-facebook"></a>
-      <a href="https://nstu.edu.bd/" class="fa fa-google"></a>
-      <a href="https://www.linkedin.com/school/noakhali-science-and-technology-university/" class="fa fa-linkedin"></a>
-      
-    </p>
-  
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 col-sm-12">
-          <div style="color:#ffffff;" class="wow fadeInUp footer-copyright">
-            <p>E-medical <br>
-              Copyright &copy; 2023 </p>
-          </div>
+<footer class="public-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+          <strong class="text-white fs-5">NSTU E-Medical Center</strong>
+        </div>
+        <p class="mb-3" style="max-width:420px">Free general and emergency medical care for students, teachers, officers, staff and their families at Noakhali Science and Technology University.</p>
+        <div class="social">
+          <a href="https://www.facebook.com/NSTUCampus" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="https://nstu.edu.bd/" target="_blank" rel="noopener" aria-label="NSTU website"><i class="bi bi-globe2"></i></a>
+          <a href="https://www.linkedin.com/school/noakhali-science-and-technology-university/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
         </div>
       </div>
+      <div class="col-6 col-lg-3">
+        <h5>Quick links</h5>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li><a href="/patientsignup">Register as patient</a></li>
+          <li><a href="/blog/">Health blog</a></li>
+          <li><a href="/aboutus">About the center</a></li>
+          <li><a href="/contactus">Contact us</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-4">
+        <h5>Visit us</h5>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li><i class="bi bi-geo-alt me-2"></i>Administration Building, Room 117, NSTU</li>
+          <li><i class="bi bi-clock me-2"></i>Working days, 8:30 AM to 5:00 PM</li>
+          <li><i class="bi bi-truck-front me-2"></i>Emergency &amp; ambulance: 24 hours</li>
+        </ul>
+      </div>
     </div>
-  </footer>
-</div>
-
-
-</html>
+    <div class="bottom d-flex flex-column flex-md-row justify-content-between gap-2">
+      <span>&copy; {% now "Y" %} NSTU E-Medical Center</span>
+      <span>Noakhali Science and Technology University</span>
+    </div>
+  </div>
+</footer>

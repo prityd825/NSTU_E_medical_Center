@@ -1,262 +1,113 @@
 {% extends sidebar %}
-{% load static %}
+{% block title %}Messages · NSTU E-Medical{% endblock %}
+{% block page_title %}Messages{% endblock %}
 {% block content %}
+<div class="page-header">
+  <div>
+    <h1>Messages</h1>
+    <p>{% if nav_role == 'doctor' %}Answer questions from your patients.{% else %}Ask your doctor a question and read their replies.{% endif %}</p>
+  </div>
+  {% if nav_role == 'patient' %}
+  <a href="{% url 'select_doctor' %}" class="btn btn-primary btn-icon"><i class="bi bi-plus-lg"></i> New message</a>
+  {% endif %}
+</div>
 
-    <head>
-        <style>
-          body {
-            background-color: white;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-          }
-          .navbar{
-            margin-left: 240px;
-          }
-
-          .container {
-            margin: 60px auto;
-            background: #fff;
-            padding: 0;
-            border-radius: 7px;
-          }
-
-          .profile-image {
-            width: 50px;
-            height: 50px;
-            border-radius: 40px;
-          }
-
-          .settings-tray {
-            background: #eee;
-            padding: 10px 15px;
-            border-radius: 7px;
-          }
-          .settings-tray .no-gutters {
-            padding: 0;
-          }
-          .settings-tray--right {
-            float: right;
-          }
-          .settings-tray--right i {
-            margin-top: 10px;
-            font-size: 25px;
-            color: grey;
-            margin-left: 14px;
-            transition: 0.3s;
-          }
-          .settings-tray--right i:hover {
-            color: #74b9ff;
-            cursor: pointer;
-          }
-
-          .search-box {
-            background: #fafafa;
-            padding: 10px 13px;
-          }
-          .search-box .input-wrapper {
-            background: #fff;
-            border-radius: 40px;
-          }
-          .search-box .input-wrapper i {
-            color: grey;
-            margin-left: 7px;
-            vertical-align: middle;
-          }
-
-          input {
-            border: none;
-            border-radius: 30px;
-            width: 80%;
-          }
-          input::placeholder {
-            color: #e3e3e3;
-            font-weight: 300;
-            margin-left: 20px;
-          }
-          input:focus {
-            outline: none;
-          }
-
-          .friend-drawer {
-            padding: 10px 15px;
-            display: flex;
-            vertical-align: baseline;
-            background: #fff;
-            transition: 0.3s ease;
-          }
-          .friend-drawer--grey {
-            background: #eee;
-          }
-          .friend-drawer .text {
-            margin-left: 12px;
-            width: 70%;
-          }
-          .friend-drawer .text h6 {
-            margin-top: 6px;
-            margin-bottom: 0;
-          }
-          .friend-drawer .text p {
-            margin: 0;
-          }
-          .friend-drawer .time {
-            color: grey;
-          }
-          .friend-drawer--onhover:hover {
-            background: #74b9ff;
-            cursor: pointer;
-          }
-          .friend-drawer--onhover:hover p,
-          .friend-drawer--onhover:hover h6,
-          .friend-drawer--onhover:hover .time {
-            color: #fff !important;
-          }
-
-          hr {
-            margin: 5px auto;
-            width: 60%;
-          }
-
-          .chat-bubble {
-            padding: 10px 14px;
-            background: #eee;
-            margin: 10px 30px;
-            border-radius: 9px;
-            position: relative;
-            animation: fadeIn 1s ease-in;
-          }
-          .chat-bubble:after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 0;
-            height: 0;
-            border: 20px solid transparent;
-            border-bottom: 0;
-            margin-top: -10px;
-          }
-          .chat-bubble--left:after {
-            left: 0;
-            border-right-color: #eee;
-            border-left: 0;
-            margin-left: -20px;
-          }
-          .chat-bubble--right:after {
-            right: 0;
-            border-left-color: #74b9ff;
-            border-right: 0;
-            margin-right: -20px;
-          }
-
-          @keyframes fadeIn {
-            0% {
-              opacity: 0;
-            }
-            100% {
-              opacity: 1;
-            }
-          }
-          .offset-md-9 .chat-bubble {
-            background: #74b9ff;
-            color: #fff;
-          }
-
-          .chat-box-tray {
-            background: #eee;
-            display: flex;
-            align-items: baseline;
-            padding: 10px 15px;
-            align-items: center;
-            margin-top: 19px;
-            bottom: 0;
-          }
-          .chat-box-tray input {
-            margin: 0 10px;
-            padding: 6px 2px;
-          }
-          .chat-box-tray i {
-            color: grey;
-            font-size: 30px;
-            vertical-align: middle;
-          }
-          .chat-box-tray i:last-of-type {
-            margin-left: 25px;
-          }
-        </style>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
-    </head>
-
-    
-    <div class="body">
-      <div class="container">
-        <div class="row no-gutters">
-          <div class="col-md-4 border-right">
-          {% for msg in messages %}
-          <a class="friend-drawer friend-drawer--onhover" href="{% url 'message_list' msg.chat.id msg.recipient.id %}">
-            <img class="profile-image" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="">
-            <div class="text">
-            <h6 style="color: black;">{{msg.recipient.username}}</h6>
-            <p class="text-muted" style="text-align: left;">{{msg.content}}</p>
+<div class="card chat-layout">
+  {# ---------- Conversation list ---------- #}
+  <nav class="chat-list" aria-label="Conversations">
+    {% for msg in messages %}{% if msg.sender == request.user or msg.recipient == request.user %}
+      {% if msg.sender == request.user %}
+        <a href="{% url 'message_list' msg.chat.id msg.recipient.id %}" class="{% if msg.chat.id == chat_id %}active{% endif %}">
+          {% include 'hospital/partials/avatar.html' with pic=msg.recipient.doctor.profile_pic name=msg.recipient.get_full_name|default:msg.recipient.username %}
+          <div class="min-w-0 flex-grow-1">
+            <div class="d-flex justify-content-between gap-2">
+              <span class="fw-semibold text-truncate">{{ msg.recipient.get_full_name|default:msg.recipient.username }}</span>
+              <span class="small text-muted text-nowrap">{{ msg.timestamp|date:"d M" }}</span>
             </div>
-            <!-- <span class="time text-muted small">13:21</span> -->
-          </a>
-          <hr>
-                {% endfor %}
+            <div class="preview">You: {{ msg.content }}</div>
           </div>
-          <div class="col-md-8">
-          <div class="settings-tray">
-            <div class="friend-drawer no-gutters friend-drawer--grey">
-            <img class="profile-image" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Profile Pic" />
-            <div class="text">
-              <h6>{{request.user.username}}</h6>
+        </a>
+      {% else %}
+        <a href="{% url 'message_list' msg.chat.id msg.sender.id %}" class="{% if msg.chat.id == chat_id %}active{% endif %}">
+          {% include 'hospital/partials/avatar.html' with pic=msg.sender.doctor.profile_pic name=msg.sender.get_full_name|default:msg.sender.username %}
+          <div class="min-w-0 flex-grow-1">
+            <div class="d-flex justify-content-between gap-2">
+              <span class="fw-semibold text-truncate">{{ msg.sender.get_full_name|default:msg.sender.username }}</span>
+              <span class="small text-muted text-nowrap">{{ msg.timestamp|date:"d M" }}</span>
             </div>
-            </div>
+            <div class="preview">{{ msg.content }}</div>
           </div>
-          <div class="chat-panel" style="max-height: 500px; overflow-y: scroll;">
-            {% for msg in chatMessage %}
-            {% if msg.sender.username == request.user.username %}
-            <div class="row no-gutters">
-              <div class="col-md-3 offset-md-9">
-                <div class="chat-bubble chat-bubble--right" style="word-wrap: break-word;">
-                  
-                  {{msg.content}}
-                </div>
-              </div>
-              </div>
-          
-            {% else %}
-            <div class="row no-gutters">
-              <div class="col-md-3">
-                <div class="chat-bubble chat-bubble--left" style="word-wrap: break-word;">
-                  {{msg.content}}
-                </div>
-              </div>
-              </div>
-              {% endif %}
+        </a>
+      {% endif %}
+    {% endif %}{% empty %}
+      {% include 'hospital/partials/empty_state.html' with icon="bi-chat-left" title="No conversations" text="Your conversations will appear here." %}
+    {% endfor %}
+  </nav>
 
+  {# ---------- Thread ---------- #}
+  <section class="chat-thread">
+    {% if chat_id %}
+      {# message_list view: show the selected conversation, only if this user takes part in it #}
+      {% with first=chatMessage.0 %}
+      {% if first and first.sender == request.user or first and first.recipient == request.user %}
+        <div class="card-header">
+          {% if first.sender == request.user %}
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=first.recipient.doctor.profile_pic name=first.recipient.get_full_name|default:first.recipient.username %}
+              <div><div class="name">{{ first.recipient.get_full_name|default:first.recipient.username }}</div><div class="sub">{% if first.recipient.doctor %}Doctor{% if first.recipient.doctor.department %} &middot; {{ first.recipient.doctor.department }}{% endif %}{% else %}Patient{% endif %}</div></div>
+            </div>
+          {% else %}
+            <div class="cell-person">
+              {% include 'hospital/partials/avatar.html' with pic=first.sender.doctor.profile_pic name=first.sender.get_full_name|default:first.sender.username %}
+              <div><div class="name">{{ first.sender.get_full_name|default:first.sender.username }}</div><div class="sub">{% if first.sender.doctor %}Doctor{% if first.sender.doctor.department %} &middot; {{ first.sender.doctor.department }}{% endif %}{% else %}Patient{% endif %}</div></div>
+            </div>
+          {% endif %}
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          {% for msg in chatMessage %}
+            <div class="bubble{% if msg.sender == request.user %} me{% endif %}">
+              <div class="text-break">{{ msg.content|linebreaksbr }}</div>
+              <div class="meta">{{ msg.timestamp|date:"d M, H:i" }}</div>
+            </div>
           {% endfor %}
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <!-- <i class="material-icons">sentiment_very_satisfied</i> -->
-                <form method="post" class="chat-box-tray">
-                  {% csrf_token %}
-                  <input name="content" type="text" placeholder="Type your message here..." style="padding: 5px 10px 5px 10px;">
-                  <button style="background: transparent; border: none;" type="submit"><i class="material-icons">send</i></button>
-              </form>
-                <!-- <i class="material-icons">mic</i> -->
-
-              </div>
-          </div>
-          
-          </div>
         </div>
+        <form method="post" class="chat-compose">
+          {% csrf_token %}
+          <input name="content" type="text" class="form-control" placeholder="Type your message..." aria-label="Message" autocomplete="off" required autofocus>
+          <button class="btn btn-primary btn-icon" type="submit" aria-label="Send message"><i class="bi bi-send"></i><span class="d-none d-sm-inline">Send</span></button>
+        </form>
+      {% else %}
+        <div class="chat-messages justify-content-center">
+          {% include 'hospital/partials/empty_state.html' with icon="bi-chat-dots" title="Pick a conversation" text="Choose a conversation on the left to read and reply." %}
         </div>
-    </div>
-    <!-- {% comment %} <li><a href="{% url 'message_detail' message.id %}">{{ message.recipient.username }}</a></li> {% endcomment %}
-            {% comment %} <li><span>{{ message.recipient.username }}</span></li> {% endcomment %} -->
-
-    <!-- <a href="{% url 'send_message' recipient_id=recipient.id %}">New Message</a> -->
+      {% endif %}
+      {% endwith %}
+    {% else %}
+      {# send_message view: start a new conversation with `recipient` #}
+      <div class="card-header">
+        <div class="cell-person">
+          {% include 'hospital/partials/avatar.html' with pic=recipient.doctor.profile_pic name=recipient.get_full_name|default:recipient.username %}
+          <div><div class="name">{{ recipient.get_full_name|default:recipient.username }}</div><div class="sub">New conversation</div></div>
+        </div>
+      </div>
+      <div class="chat-messages justify-content-center">
+        {% include 'hospital/partials/empty_state.html' with icon="bi-send" title="Start the conversation" text="Write your first message below. You will see the reply in your messages." %}
+      </div>
+      <form method="post" class="chat-compose">
+        {% csrf_token %}
+        <input name="content" type="text" class="form-control" placeholder="Type your message..." aria-label="Message" autocomplete="off" required autofocus>
+        <button class="btn btn-primary btn-icon" type="submit" aria-label="Send message"><i class="bi bi-send"></i><span class="d-none d-sm-inline">Send</span></button>
+      </form>
+    {% endif %}
+  </section>
+</div>
 {% endblock content %}
 
-
+{% block page_js %}
+<script>
+  (function () {
+    var box = document.getElementById('chatMessages');
+    if (box) { box.scrollTop = box.scrollHeight; }
+  })();
+</script>
+{% endblock %}

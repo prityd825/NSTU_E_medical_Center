@@ -1,16 +1,19 @@
-{% extends 'hospital/doctor_base.html' %}
+{% extends 'hospital/'|add:nav_role|add:'_base.html' %}
+{% block title %}Delete post · NSTU E-Medical{% endblock %}
+{% block page_title %}Health blog{% endblock %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Delete Post</legend>
-                <h2>Are you sure you want to delete the post "{{ object.title }}"</h2>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-outline-secondary" href="{% url 'post-detail' object.id %}">Cancel</a>
-            </div>
-        </form>
-    </div>
+<div class="py-3">
+  <div class="card status-card">
+    <div class="stat-icon tone-danger"><i class="bi bi-trash"></i></div>
+    <h1 class="h4">Delete this post?</h1>
+    <p class="text-muted mb-1">You are about to delete:</p>
+    <p class="fw-semibold mb-3">&ldquo;{{ object.title }}&rdquo;</p>
+    <p class="text-muted small mb-4">The post will be removed from the blog for everyone. This cannot be undone.</p>
+    <form method="POST" class="d-flex gap-2 justify-content-center flex-wrap">
+      {% csrf_token %}
+      <a class="btn btn-light" href="{% if nav_role == 'admin' %}/admin-blog{% else %}{% url 'post-detail' object.id %}{% endif %}">Cancel</a>
+      <button class="btn btn-danger btn-icon" type="submit"><i class="bi bi-trash"></i> Yes, delete post</button>
+    </form>
+  </div>
+</div>
 {% endblock content %}

@@ -1,78 +1,26 @@
+{% extends 'hospital/patient_base.html' %}
+{% block title %}Message a doctor · NSTU E-Medical{% endblock %}
+{% block page_title %}Messages{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Message a doctor</h1>
+    <p>Choose the doctor you want to talk to. If you have chatted before, we open that conversation.</p>
+  </div>
+  <a href="/message_list/" class="btn btn-soft btn-icon"><i class="bi bi-inbox"></i> My conversations</a>
+</div>
 
-
-    {% extends 'hospital/patient_base.html' %}
-    {%load static%}
-    {% block content %}
-
-    <head>
-        <style>
-            /* Center the content horizontally and add some spacing */
-        .row {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh; /* Adjust the height as needed for your layout */
-        }
-
-        /* Style the heading */
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Style the form elements */
-        form {
-            width: 100%;
-            max-width: 400px;
-            
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: aliceblue;
-        }
-
-        /* Style form fields */
-        form input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        /* Style the submit button */
-        form button[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 40%;
-        }
-
-        /* Hover effect for the submit button */
-        form button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        .navbar{
-            margin-left: 240px;
-          }
-        </style>
-    </head>
-    <body>
-        <div class="row">
-            <h1>Select a Doctor to Message</h1>
-        
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Message</button>
-            </form>
-        </div>
-    </body>
-
-    {% endblock content%}
+<div class="card" style="max-width:560px">
+  <div class="card-body p-4">
+    {% include 'hospital/partials/form_errors.html' with form=form %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include 'hospital/partials/field.html' with field=form.doctor label="Doctor" %}
+      <div class="form-actions">
+        <a href="/patient-dashboard" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-icon"><i class="bi bi-chat-dots"></i> Start chatting</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

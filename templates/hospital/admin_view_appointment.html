@@ -1,51 +1,42 @@
 {% extends 'hospital/admin_base.html' %}
+{% block title %}All appointments · NSTU E-Medical{% endblock %}
+{% block page_title %}Appointments{% endblock %}
 {% block content %}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-  </style>
-</head>
-
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Appointments</h6>
-    </div>
-    <table class="table table-hover" id="dev-table">
-      <thead>
-        <tr>
-          <th>Doctor Name</th>
-          <th>Patient Name</th>
-          <th>Description</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      {% for a in appointments %}
-      <tr>
-        <td> {{a.doctorName}}</td>
-        <td>{{a.patientName}}</td>
-        <td>{{a.description}}</td>
-        <td>{{a.appointmentDate}}</td>
-      </tr>
-      {% endfor %}
-    </table>
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/admin-appointment">Appointments</a></li><li class="breadcrumb-item active" aria-current="page">All appointments</li></ol></nav>
+    <h1>All appointments</h1>
+    <p>{{ appointments|length }} approved appointment{{ appointments|length|pluralize }} between doctors and patients.</p>
   </div>
+  <a href="/admin-add-appointment" class="btn btn-primary btn-icon"><i class="bi bi-calendar-plus"></i> Book appointment</a>
 </div>
 
-
+<div class="card table-card">
+  {% if appointments %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:320px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search by doctor, patient or reason" data-table-filter="#appointmentTable" aria-label="Search appointments">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="appointmentTable">
+      <thead><tr><th>Patient</th><th>Doctor</th><th>Reason</th><th>Date</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for a in appointments %}
+        <tr>
+          <td class="fw-semibold">{{ a.patientName|default:"Unknown patient" }}</td>
+          <td>{{ a.doctorName|default:"Unknown doctor" }}</td>
+          <td style="min-width:220px">{{ a.description|truncatechars:120 }}</td>
+          <td class="text-nowrap">{{ a.appointmentDate|date:"d M Y" }}</td>
+          <td>{% if a.status %}<span class="badge badge-soft-success">Approved</span>{% else %}<span class="badge badge-soft-warning">Pending</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-calendar-x" title="No appointments yet" text="Book one for a patient, or approve a request." href="/admin-add-appointment" cta="Book appointment" %}
+  {% endif %}
+</div>
 {% endblock content %}

@@ -1,51 +1,44 @@
 {% extends 'hospital/admin_base.html' %}
+{% block title %}Medicine stock · NSTU E-Medical{% endblock %}
+{% block page_title %}Medicine stock{% endblock %}
 {% block content %}
-{%load static%}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-  </style>
-</head>
-
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Medicine Records</h6>
-    </div>
-    <table class="table table-hover" id="dev-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Medicine Name</th>
-          <th>Company name</th>
-          <th>Stock</th>
-        </tr>
-      </thead>
-      {% for m in medicines %}
-      <tr>
-        <td> {{m.date}}</td>
-        <td>{{m.medicinename}}</td>
-        <td>{{m.companyname}}</td>
-        <td>{{m.stock}}</td>
-      </tr>
-      {% endfor %}
-    </table>
+<div class="page-header">
+  <div>
+    <h1>Medicine stock</h1>
+    <p>A read-only view of the medicines recorded by the accountants. Items with fewer than 10 left are marked low.</p>
   </div>
 </div>
 
+<div class="card table-card">
+  {% if medicines %}
+  <div class="card-header">
+    <div class="search-box flex-grow-1" style="max-width:320px">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control form-control-sm" placeholder="Search by medicine or company" data-table-filter="#medicineTable" aria-label="Search medicines">
+    </div>
+    <span class="text-muted small">{{ medicines|length }} item{{ medicines|length|pluralize }}</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover" id="medicineTable">
+      <thead><tr><th>Medicine</th><th>Company</th><th>Recorded</th><th class="text-end">In stock</th></tr></thead>
+      <tbody>
+      {% for m in medicines %}
+        <tr>
+          <td class="fw-semibold">{{ m.medicinename }}</td>
+          <td>{{ m.companyname }}</td>
+          <td class="text-nowrap">{{ m.date|date:"d M Y" }}</td>
+          <td class="text-end">
+            {% if m.stock <= 0 %}<span class="badge badge-soft-danger">Out of stock</span>
+            {% elif m.stock < 10 %}<span class="badge badge-soft-warning">{{ m.stock }} left · low</span>
+            {% else %}<span class="badge badge-soft-success">{{ m.stock }}</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-capsule" title="No medicines recorded" text="Accountants add medicines to the stock from their own dashboard." %}
+  {% endif %}
+</div>
 {% endblock content %}

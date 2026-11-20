@@ -1,58 +1,35 @@
 {% extends 'hospital/patient_base.html' %}
+{% block title %}My appointments · NSTU E-Medical{% endblock %}
+{% block page_title %}Appointments{% endblock %}
 {% block content %}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-    .navbar{
-      margin-left: 240px;
-    }
-  </style>
-</head>
-
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Your Appointments</h6>
-    </div>
-    <table class="table table-hover" id="dev-table">
-      <thead>
-        <tr>
-          <th>Doctor Name</th>
-          <th>Description</th>
-          <th>Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      {% for a in appointments %}
-      <tr>
-        <td> {{a.doctorName}}</td>
-        <td>{{a.description}}</td>
-        <td>{{a.appointmentDate}}</td>
-        {%if a.status%}
-        <td> <span class="label label-primary">Confirmed</span></td>
-        {% else %}
-        <td> <span class="label label-success">Pending</span></td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </table>
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/patient-appointment">Appointments</a></li><li class="breadcrumb-item active" aria-current="page">My appointments</li></ol></nav>
+    <h1>My appointments</h1>
+    <p>New requests stay <strong>Pending</strong> until the admin approves them.</p>
   </div>
+  <a href="/patient-book-appointment" class="btn btn-primary btn-icon"><i class="bi bi-calendar-plus"></i> Book appointment</a>
 </div>
 
-
+<div class="card table-card">
+  {% if appointments %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Doctor</th><th>Problem</th><th>Date</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for a in appointments %}
+        <tr>
+          <td class="fw-semibold">{{ a.doctorName }}</td>
+          <td>{{ a.description }}</td>
+          <td class="text-nowrap">{{ a.appointmentDate|date:"d M Y" }}</td>
+          <td>{% if a.status %}<span class="badge badge-soft-success">Approved</span>{% else %}<span class="badge badge-soft-warning">Pending</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    {% include 'hospital/partials/empty_state.html' with icon="bi-calendar-x" title="No appointments yet" text="Book your first appointment with one of our doctors." href="/patient-book-appointment" cta="Book appointment" %}
+  {% endif %}
+</div>
 {% endblock content %}

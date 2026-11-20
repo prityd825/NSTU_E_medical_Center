@@ -1,43 +1,27 @@
 {% extends 'hospital/doctor_base.html' %}
-{% load crispy_forms_tags %}
+{% block title %}{% if object %}Edit post{% else %}Write a post{% endif %} · NSTU E-Medical{% endblock %}
+{% block page_title %}Health blog{% endblock %}
 {% block content %}
-<style>
-    
-    .form-box {
-        border: 1px solid #e0e0e0;
-        padding: 20px;
-        margin: 20px 0;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+<div class="page-header">
+  <div>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/doctor-blog/">Health blog</a></li><li class="breadcrumb-item active" aria-current="page">{% if object %}Edit post{% else %}Write a post{% endif %}</li></ol></nav>
+    <h1>{% if object %}Edit your post{% else %}Write a post{% endif %}</h1>
+    <p>Share health advice in plain, friendly language. Everyone who visits the blog can read it.</p>
+  </div>
+</div>
 
-    .form-box legend {
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-  
-    .form-control {
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    .navbar {
-        margin-left: 240px;
-    }
-</style>
-
-<br><br><br>
-<div class="content-section">
-    <form method="POST" class="form-box">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Blog Post</legend>
-            {{ form|crispy }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Post</button>
-        </div>
+<div class="card" style="max-width:860px">
+  <div class="card-body p-4">
+    {% include 'hospital/partials/form_errors.html' with form=form %}
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      {% include 'hospital/partials/field.html' with field=form.title label="Title" placeholder="e.g. Staying healthy during exam season" %}
+      {% include 'hospital/partials/field.html' with field=form.content label="Post" placeholder="Write your post here..." rows="12" %}
+      <div class="form-actions">
+        <a href="{% if object %}{% url 'post-detail' object.id %}{% else %}/doctor-blog/{% endif %}" class="btn btn-light">Cancel</a>
+        <button class="btn btn-primary btn-icon" type="submit"><i class="bi bi-send"></i> {% if object %}Save changes{% else %}Publish post{% endif %}</button>
+      </div>
     </form>
+  </div>
 </div>
 {% endblock content %}
